@@ -40,7 +40,7 @@ export default function UserInfo()
                 <p className="item">{myInfo.education}</p>
                 <p className="item">{myInfo.about}</p>
                 <p className="item">{myInfo.aboutPar}</p>
-                <img src={`http://localhost:4000/images/${myInfo.image}`} alt={myInfo.image} />
+                <img src={`http://localhost:4000/images/${myInfo.image}`} alt={myInfo.image} className='infoImg' />
             </div>
         return data;
     }

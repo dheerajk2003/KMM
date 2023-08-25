@@ -5,9 +5,9 @@ import jwt_decode from "jwt-decode";
 export default function Home() {
   const [user, setUser] = useState({});
   const [myToken, setMyToken] = useState("");
-  const[present, setPresent] = useState(false);
+  const [present, setPresent] = useState(false);
 
-  function getInfo(){
+  function getInfo() {
     try {
       const token = localStorage.getItem("KMMtoken");
       setMyToken(token);
@@ -46,14 +46,18 @@ export default function Home() {
   //     console.log("in func" + userIds + " ,  " + user.id)
   // }
 
-  if(!present){
+  if (!present) {
     getInfo();
   }
 
   function logOut() {
     if (myToken) {
       localStorage.removeItem("KMMtoken");
-      setUser({});
+      setUser({
+        id: "go to login page",
+        username: "then login",
+        email: "then come here again",
+      });
     }
   }
 

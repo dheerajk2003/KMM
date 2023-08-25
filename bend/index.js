@@ -121,8 +121,6 @@ app.get("/partner" ,authenticateToken , (req, res) => {
 app.get("/images/:imageUrl", (req, res) => {
   try {
     const imageUrl = req.params.imageUrl;
-    console.log(imageUrl);
-    // if (imageUrl)
     fs.readFile(`./images/${imageUrl}`, (err, data) => {
       if (err) {
         res.statusCode = 500;
@@ -148,7 +146,7 @@ app.post("/register", async (req, res) => {
     let users = [];
     // const userData = JSON.parse(fs.readFileSync("Users.json",'utf8'));
     try {
-      const usersData = fs.readFileSync("users.json", "utf8");
+      const usersData = fs.readFileSync("Users.json", "utf8");
       users = JSON.parse(usersData);
     } catch (err) {
       // return res.json(`${err} in reading json`);
