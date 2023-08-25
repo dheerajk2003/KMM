@@ -55,7 +55,6 @@ export default function GetBio(){
         }
         try{
             if(userImage){
-                alert("running second try");
                 const formData = new FormData();
                 formData.append('image', userImage);
                 fetch("http://localhost:4000/uploadimage" , {
@@ -67,7 +66,7 @@ export default function GetBio(){
                 })
                 .then(responce => responce.json())
                 .then((data) => {
-                    alert(data);
+                    console.log(data);
                 })
             }
         }

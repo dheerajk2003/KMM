@@ -267,6 +267,28 @@ app.post("/uploadimage", upload.single("image"), (req, res) => {
   }
 });
 
+app.get("/deletebio", authenticateToken, (req, res) => {
+  try{
+    const id = req.header("id");
+    if(id){
+      const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
+      if(BioData){
+        // console.log(id + 1);
+        const data =  BioData.filter((b) => {
+          console.log(b.id)
+          return id != b.id;
+        });
+        console.log(data);
+        fs.writeFileSync("BioData.json", JSON.stringify(data));
+        res.json("bio-data deleted succesfully");
+      }
+    }
+  }  
+  catch(error){
+    res.json("error occured while deleting biodata" + error)
+  }
+})
+
 
 // Authentication user token with db token
 

@@ -5,8 +5,13 @@ export default function UserInfo()
 {
     const myToken = localStorage.getItem('KMMtoken');
     const [myInfo, setMyInfo] = useState({});
+    const [bioAvailable, setBioAvailable] = useState(false);
 
     useEffect(() => {
+        getInfo();
+    }, []);
+
+    function getInfo(){
         try{
             if(myToken){
                 const decodedToken = jwt_decode(myToken);
@@ -18,14 +23,42 @@ export default function UserInfo()
                 })
                 .then(responce => responce.json())
                 .then((data) => {
-                    setMyInfo(data);
+                    if(data.id){
+                        setBioAvailable(true);
+                        setMyInfo(data);
+                    }
+                    else{
+                        setMyInfo({
+                            "fullName" : data
+                        });
+                    }
                 });
             }
         }
         catch(error){
             alert(error);
         }
-    }, []);
+    }
+    // setInterval(() => {
+    //     console.log(myInfo);
+    // }, 4000);
+
+    function deleteBio(){
+        const alertData = confirm("Do you realy want to delete bio data");
+        if(alertData){
+            fetch("http://localhost:4000/deletebio", {
+                method: "GET",
+                headers: {
+                    "auth-token": `${myToken}`,
+                    "id" : jwt_decode(myToken)
+                }
+            })
+            .then(responce => responce.json())
+            .then(data => alert(data));
+            getInfo();
+            setBioAvailable(false);
+        }
+    }
 
     function MapInfo(){
         const data =  <div>
@@ -48,6 +81,13 @@ export default function UserInfo()
     return(
         <div>
             <MapInfo />
+            <button onClick={""}>Edit Bio</button>
+            <button 
+            onClick={() => deleteBio()}
+            style={{
+                display: bioAvailable ? "inline" : "none"
+            }}
+            >Delete Bio</button>
         </div>
     )
 }
