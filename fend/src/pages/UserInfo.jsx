@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function UserInfo()
 {
@@ -81,7 +82,7 @@ export default function UserInfo()
     return(
         <div>
             <MapInfo />
-            <button onClick={""}>Edit Bio</button>
+            <button>{<Link to="/editbio" >Edit Bio</Link>}</button>
             <button 
             onClick={() => deleteBio()}
             style={{

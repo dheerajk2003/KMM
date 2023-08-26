@@ -86,34 +86,33 @@ app.get("/info:userId", authenticateToken, (req, res) => {
   }
 });
 
-app.get("/partner" ,authenticateToken , (req, res) => {
-  try{
+
+// Serving list of people compatible to be partner.
+
+app.get("/partner", authenticateToken, (req, res) => {
+  try {
     const id = req.header("id");
-    if(id){
+    if (id) {
       const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
       const myData = BioData.find((u) => id === u.id);
-      if(myData){
+      if (myData) {
         const myGender = myData.gender;
         const pList = BioData.filter((p) => p.gender != myGender);
-        if(pList){
+        if (pList) {
           res.json(pList);
-        }
-        else{
+        } else {
           res.json("error finding data");
         }
-      }
-      else{
+      } else {
         res.json("please insert Bio data");
       }
-    }
-    else{
+    } else {
       res.json("please login");
     }
-  }  
-  catch(error){
+  } catch (error) {
     res.json("error in finding data " + error);
   }
-})
+});
 
 
 // Serving Image
@@ -267,15 +266,17 @@ app.post("/uploadimage", upload.single("image"), (req, res) => {
   }
 });
 
+// deteting a users biodata from db
+
 app.get("/deletebio", authenticateToken, (req, res) => {
-  try{
+  try {
     const id = req.header("id");
-    if(id){
+    if (id) {
       const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
-      if(BioData){
+      if (BioData) {
         // console.log(id + 1);
-        const data =  BioData.filter((b) => {
-          console.log(b.id)
+        const data = BioData.filter((b) => {
+          console.log(b.id);
           return id != b.id;
         });
         console.log(data);
@@ -283,9 +284,51 @@ app.get("/deletebio", authenticateToken, (req, res) => {
         res.json("bio-data deleted succesfully");
       }
     }
-  }  
-  catch(error){
-    res.json("error occured while deleting biodata" + error)
+  } catch (error) {
+    res.json("error occured while deleting biodata" + error);
+  }
+});
+
+// Updating bio data
+app.post("/editbio", authenticateToken, (req, res) => {
+  try {
+    const id = req.header("id");
+    const details = req.body;
+
+    if (id) {
+      try {
+        let bioData = [];
+
+        // Read existing JSON data, if the file exists
+
+        if (fs.existsSync("BioData.json")) {
+          const data = fs.readFileSync("BioData.json", "utf8");
+          if (data) {
+            bioData = JSON.parse(data);
+          }
+        }
+
+        // deleting old biodata
+        const bio = bioData.filter((b) => {
+          console.log(b.id);
+          return id != b.id;
+        });
+
+        details.id = id;
+
+        // Add new bio data and write to file
+        bio.push(details);
+        fs.writeFileSync("BioData.json", JSON.stringify(bio));
+
+        return res.status(200).json("Bio data edited successful");
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json("An error occurred : " + err);
+      }
+    }
+  }
+  catch (error) {
+    res.json("An error occured while editing bio data");
   }
 })
 

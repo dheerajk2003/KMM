@@ -6,6 +6,7 @@ import Nav from './pages/Nav';
 import GetBio from './pages/GetBio';
 import UserInfo from './pages/UserInfo';
 import Partner from './pages/Partner';
+import EditBio from './pages/EditBio';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
           <Route path='/register' element={<Registration/>} />
           <Route path='/biodata' element={<GetBio/>} />
           <Route path='/info' element={<UserInfo/>} />
-          <Route path='partner' element={<Partner/>} />
+          <Route path='/partner' element={<Partner/>} />
+          <Route path='/editbio' element={<EditBio/>} />
         </Routes>
       </BrowserRouter>
     </div>
