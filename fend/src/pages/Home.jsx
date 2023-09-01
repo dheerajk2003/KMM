@@ -65,7 +65,6 @@ export default function Home() {
     <div>
       <ul>
         <li>{user.id}</li>
-        <li>{user.username}</li>
         <li>{user.email}</li>
       </ul>
       <button

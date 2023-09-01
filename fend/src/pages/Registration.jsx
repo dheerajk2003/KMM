@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function Registration(){
-    const [username, setUsername] = useState("");
+    // const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -12,7 +12,7 @@ export default function Registration(){
             headers: {
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({username, email, password})
+            body:JSON.stringify({ email, password})
         })
         .then((response) => response.json())
         .then((data) => {
@@ -25,7 +25,7 @@ export default function Registration(){
 
     return(
         <form action="" onSubmit={handleSubmit}>
-            <input type="text" name="" id="userName" placeholder="enter name" value={username} onChange={(e) => setUsername(e.target.value)}/>
+            {/* <input type="text" name="" id="userName" placeholder="enter name" value={username} onChange={(e) => setUsername(e.target.value)}/> */}
             <input type="email" name="" id="userEmail" placeholder="enter email" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <input type="password" name="" id="userPassword" placeholder="enter password" value={password} onChange={(e) => setPassword(e.target.value)}/>      
             <button type="submit">Register</button>

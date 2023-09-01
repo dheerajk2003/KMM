@@ -141,7 +141,7 @@ app.get("/images/:imageUrl", (req, res) => {
 
 app.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = await req.body;
+    const { email, password } = await req.body;
     let users = [];
     // const userData = JSON.parse(fs.readFileSync("Users.json",'utf8'));
     try {
@@ -159,7 +159,7 @@ app.post("/register", async (req, res) => {
 
     const hashPassword = bcrypt.hashSync(password, salt);
 
-    users.push({ id, email, username, hashPassword });
+    users.push({ id, email, hashPassword });
 
     fs.writeFileSync("Users.json", JSON.stringify(users));
     res.json("registered succesfully");
