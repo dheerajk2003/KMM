@@ -57,11 +57,21 @@ app.get("/", (req, res) => {
 app.get("/post:userId", authenticateToken, (req, res) => {
   const { userId } = req.params;
   if (userId) {
-    const Users = JSON.parse(fs.readFileSync("Users.json", "utf8"));
-    const user = Users.find((u) => u.id === parseInt(userId));
-    if (user) {
-      res.status(200).json(user);
-    }
+    myql.login(null, (error, responce) => {
+      if(error){
+        console.log("error : " + error);
+        res.json(error);
+      }
+      if(responce){
+        res.status(200).json(responce);
+      }
+    }, parseInt(userId));
+
+    // const Users = JSON.parse(fs.readFileSync("Users.json", "utf8"));
+    // const user = Users.find((u) => u.id === parseInt(userId));
+    // if (user) {
+    //   res.status(200).json(user);
+    // }
   } else {
     res.status.json("user does not exist");
   }

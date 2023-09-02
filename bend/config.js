@@ -41,8 +41,8 @@ module.exports.getRegistered = function getRegistered(email, callback) {
     });
 };
 
-module.exports.login = function login(email, callback) {
-  con.query("SELECT * FROM Login WHERE email = ?", email, (error, res) => {
+module.exports.login = function login(email, callback, id) {
+  con.query(`SELECT * FROM Login WHERE ${email ? "email" : "id"} = ?`, email ? email : id, (error, res) => {
     if (error) {
       console.log("Error: " + error);
       return callback(error, null); // Pass the error to the callback
