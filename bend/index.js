@@ -146,21 +146,21 @@ app.post("/register", async (req, res) => {
   try {
     const { email, password } = await req.body;
     
-    myql.getRegistered(email, function (error, response) {
+    myql.getRegistered(email, function (error, responce) {
       if (error) {
         console.error("Error: " + error);
         res.status(500).json({ error: "Database error" });
       } else {
-        if (response === email) {
+        if (responce === email) {
           res.json("User already exists");
         } else {
-          console.log(email + ":" + response);
+          console.log(email + ":" + responce);
           const hashPassword = bcrypt.hashSync(password, salt);
           myql.registration({ email, hashPassword });
           res.json("registered succesfully");
         }
       }
-    });
+    }, null);
   } 
   catch (error) {
     res.status(500).json(`${error}` + "error in registration");
@@ -174,24 +174,50 @@ app.post("/login", async (req, res) => {
   let users = [];
   try {
     const { email, password } = req.body;
-    const usersData = fs.readFileSync("Users.json", "utf8");
-    users = JSON.parse(usersData);
-    const existingUser = users.find((user) => email === user.email);
-
-    if (existingUser) {
-      const passOk = await bcrypt.compare(password, existingUser.hashPassword);
-      if (passOk) {
-        const token = jwt.sign(
-          existingUser.id,
-          process.env.ACCESS_TOKEN_SECRET
-        );
-        res.json({ accessToken: token });
-      } else {
-        res.json("password not matched");
+    
+    myql.login(email ,async (error , responce) => {
+      if(error){
+        console.error("Error: " + error);
+        res.status(500).json({ error: "Database error" });
       }
-    } else {
-      res.json("User not registered");
-    }
+
+      else if(responce){
+        const passOk = await bcrypt.compare(password, responce.hashPassword);
+        if(passOk){
+          const token = jwt.sign(
+            responce.id,
+            process.env.ACCESS_TOKEN_SECRET
+            );
+          res.json({accessToken: token});
+        }
+        else{
+          res.json("wrong email or password");
+        }
+      }
+      else{
+        res.json("user not registered");
+      }
+      console.log("in bend" + responce);
+    })
+    
+    // const usersData = fs.readFileSync("Users.json", "utf8");
+    // users = JSON.parse(usersData);
+    // const existingUser = users.find((user) => email === user.email);
+
+    // if (existingUser) {
+    //   const passOk = await bcrypt.compare(password, existingUser.hashPassword);
+    //   if (passOk) {
+    //     const token = jwt.sign(
+    //       existingUser.id,
+    //       process.env.ACCESS_TOKEN_SECRET
+    //     );
+    //     res.json({ accessToken: token });
+    //   } else {
+    //     res.json("password not matched");
+    //   }
+    // } else {
+    //   res.json("User not registered");
+    // }
   } catch (err) {
     res.json(`${err} error in login`);
   }

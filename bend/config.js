@@ -25,30 +25,31 @@ module.exports.registration = function registration(loginDetails){
     })
 }
 
-// module.exports.getRegistered = function getRegistered(email, callback){
-//     con.query("SELECT email FROM Login WHERE email = ?", email, (error , res) => {
-//             if(error){
-//                 console.log("error " + error);
-//                 throw error;
-//             }
-//             else{
-//                 callback(null, res[0].email);
-//             console.log(res[0].email);
-//             }
-//     });
-// }
-
 module.exports.getRegistered = function getRegistered(email, callback) {
-    con.query("SELECT email FROM Login WHERE email = ?", email, (error, res) => {
+    con.query("SELECT * FROM Login WHERE email = ?", email, (error, res) => {
       if (error) {
         console.error("Error: " + error);
         return callback(error, null); // Pass the error to the callback
       }
   
       if (res.length > 0) {
+        console.log(res[0]);
         callback(null, res[0].email); // Pass the email to the callback if it exists
       } else {
         callback(null, null); // Pass null if the email doesn't exist
       }
     });
-  };
+};
+
+module.exports.login = function login(email, callback) {
+  con.query("SELECT * FROM Login WHERE email = ?", email, (error, res) => {
+    if (error) {
+      console.log("Error: " + error);
+      return callback(error, null); // Pass the error to the callback
+    }
+    if(res){
+      callback(null, res[0]);
+      // console.log("in db: " + res);
+    }
+  })
+}
