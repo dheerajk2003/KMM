@@ -25,6 +25,17 @@ module.exports.registration = function registration(loginDetails){
     })
 }
 
+module.exports.setBio = function setBio(bioData){
+  con.query("INSERT INTO Biodata SET ?", bioData, (error, res) => {
+    if(error){
+      console.log("an error occured : " + error);
+    }
+    else{
+      console.log("responce last id" + res.insertId);
+    }
+  });
+}
+
 module.exports.getRegistered = function getRegistered(email, callback) {
     con.query("SELECT * FROM Login WHERE email = ?", email, (error, res) => {
       if (error) {
@@ -53,3 +64,15 @@ module.exports.login = function login(email, callback, id) {
     }
   })
 }
+
+module.exports.getBio = function getBio(id, callback){
+  con.query(`SELECT * FROM Biodata WHERE id = ?`, id , (error , res) => {
+    if (error) {
+      console.log("Error: " + error);
+      return callback(error, null); // Pass the error to the callback
+    }
+    if(res){
+      callback(null, res[0]);
+    }
+  });
+};

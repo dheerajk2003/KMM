@@ -242,28 +242,37 @@ app.post("/getBio", (req, res) => {
 
   if (id) {
     try {
-      let bioData = [];
-
-      // Read existing JSON data, if the file exists
-
-      if (fs.existsSync("BioData.json")) {
-        const data = fs.readFileSync("BioData.json", "utf8");
-        if (data) {
-          bioData = JSON.parse(data);
-        }
-      }
-
-      // Check if userBio already exists
-      const userBio = bioData.find((u) => id === u.id);
-      if (userBio) {
-        return res.status(500).json("Bio Data already exists");
-      }
-
       details.id = id;
+      myql.getBio(id, (error, responce) => {
+        if(responce){
+          return res.status(500).json("Bio Data already exists");
+        }
+        else{
+          myql.setBio(details);
+        }
+      });
+      // let bioData = [];
 
-      // Add new bio data and write to file
-      bioData.push(details);
-      fs.writeFileSync("BioData.json", JSON.stringify(bioData));
+      // // Read existing JSON data, if the file exists
+
+      // if (fs.existsSync("BioData.json")) {
+      //   const data = fs.readFileSync("BioData.json", "utf8");
+      //   if (data) {
+      //     bioData = JSON.parse(data);
+      //   }
+      // }
+
+      // // Check if userBio already exists
+      // const userBio = bioData.find((u) => id === u.id);
+      // if (userBio) {
+      //   return res.status(500).json("Bio Data already exists");
+      // }
+
+      // details.id = id;
+
+      // // Add new bio data and write to file
+      // bioData.push(details);
+      // fs.writeFileSync("BioData.json", JSON.stringify(bioData));
 
       return res.status(200).json("Bio data upload successful");
     } catch (error) {
