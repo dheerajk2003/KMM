@@ -8,6 +8,9 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 
+const myql = require("./config");
+myql.connection();
+
 const app = express();
 
 app.use(express.json());
@@ -142,28 +145,24 @@ app.get("/images/:imageUrl", (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const { email, password } = await req.body;
-    let users = [];
-    // const userData = JSON.parse(fs.readFileSync("Users.json",'utf8'));
-    try {
-      const usersData = fs.readFileSync("Users.json", "utf8");
-      users = JSON.parse(usersData);
-    } catch (err) {
-      // return res.json(`${err} in reading json`);
-      console.log(err);
-    }
-    const id = users.length + 1;
-    const existingUser = users.find((user) => user.email === email);
-    if (existingUser) {
-      return res.status(409).json("Email already used");
-    }
-
-    const hashPassword = bcrypt.hashSync(password, salt);
-
-    users.push({ id, email, hashPassword });
-
-    fs.writeFileSync("Users.json", JSON.stringify(users));
-    res.json("registered succesfully");
-  } catch (error) {
+    
+    myql.getRegistered(email, function (error, response) {
+      if (error) {
+        console.error("Error: " + error);
+        res.status(500).json({ error: "Database error" });
+      } else {
+        if (response === email) {
+          res.json("User already exists");
+        } else {
+          console.log(email + ":" + response);
+          const hashPassword = bcrypt.hashSync(password, salt);
+          myql.registration({ email, hashPassword });
+          res.json("registered succesfully");
+        }
+      }
+    });
+  } 
+  catch (error) {
     res.status(500).json(`${error}` + "error in registration");
   }
 });
