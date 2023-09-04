@@ -9,6 +9,7 @@ const path = require("path");
 const multer = require("multer");
 
 const myql = require("./config");
+const { receiveMessageOnPort } = require("worker_threads");
 myql.connection();
 
 const app = express();
@@ -37,7 +38,6 @@ const storage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    console.log(file);
     cb(null, `${Date.now()}${file.originalname}`);
   },
 });
@@ -83,17 +83,31 @@ app.get("/post:userId", authenticateToken, (req, res) => {
 app.get("/info:userId", authenticateToken, (req, res) => {
   const { userId } = req.params;
   if (userId) {
-    const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
-    if (BioData) {
-      const userBio = BioData.find((u) => u.id == userId);
-      if (userBio) {
-        res.status(200).json(userBio);
-      } else {
-        res.status(400).json("error in finding Bio Data");
+
+    myql.getBio(userId, (error, responce) => {
+      if(error){
+        console.log("error " + error);
+        res.json(error);
       }
-    } else {
-      res.status(300).json("error in finding data");
-    }
+      if(responce){
+        res.status(200).json(responce);
+      }
+      else{
+        res.json("bio data does not exist");
+      }
+    });
+
+    // const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
+    // if (BioData) {
+    //   const userBio = BioData.find((u) => u.id == userId);
+    //   if (userBio) {
+    //     res.status(200).json(userBio);
+    //   } else {
+    //     res.status(400).json("error in finding Bio Data");
+    //   }
+    // } else {
+    //   res.status(300).json("error in finding data");
+    // }
   } else {
     res.status(500).json("error in finding Bio Data");
   }
@@ -102,23 +116,60 @@ app.get("/info:userId", authenticateToken, (req, res) => {
 
 // Serving list of people compatible to be partner.
 
-app.get("/partner", authenticateToken, (req, res) => {
+app.post("/partner", authenticateToken, async (req, res) => {
   try {
     const id = req.header("id");
+    const {searchInput, searchType} = await req.body;
     if (id) {
-      const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
-      const myData = BioData.find((u) => id === u.id);
-      if (myData) {
-        const myGender = myData.gender;
-        const pList = BioData.filter((p) => p.gender != myGender);
-        if (pList) {
-          res.json(pList);
-        } else {
-          res.json("error finding data");
+
+      myql.getBio(id, (error, responce) => {
+        if(error){
+          console.error("Error: " + error);
+          res.status(500).json({ error: "Database error" });
         }
-      } else {
-        res.json("please insert Bio data");
-      }
+        if(responce){
+          const myGender = responce.gender;
+          console.log(searchInput + searchType);
+          if(searchInput){
+            myql.searchPar(searchType, `%${searchInput}%`, (error, responce) => {
+              if(error){
+                console.error("Error: " + error);
+                res.status(500).json({ error: "Database error" });
+              }
+              else{
+                // console.log(responce);
+                res.json(responce);
+              }
+            })
+          }
+          else {
+            myql.findPar(myGender, (error, responce) => {
+              if(error){
+                console.error("Error: " + error);
+                res.status(500).json({ error: "Database error" });
+              }
+              else{
+                // console.log(responce);
+                res.json(responce);
+              }
+            })
+          }
+        }
+      });
+
+      // const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
+      // const myData = BioData.find((u) => id === u.id);
+      // if (myData) {
+      //   const myGender = myData.gender;
+      //   const pList = BioData.filter((p) => p.gender != myGender);
+      //   if (pList) {
+      //     res.json(pList);
+      //   } else {
+      //     res.json("error finding data");
+      //   }
+      // } else {
+      //   res.json("please insert Bio data");
+      // }
     } else {
       res.json("please login");
     }
@@ -164,7 +215,6 @@ app.post("/register", async (req, res) => {
         if (responce === email) {
           res.json("User already exists");
         } else {
-          console.log(email + ":" + responce);
           const hashPassword = bcrypt.hashSync(password, salt);
           myql.registration({ email, hashPassword });
           res.json("registered succesfully");
@@ -207,8 +257,7 @@ app.post("/login", async (req, res) => {
       else{
         res.json("user not registered");
       }
-      console.log("in bend" + responce);
-    })
+    }, null);
     
     // const usersData = fs.readFileSync("Users.json", "utf8");
     // users = JSON.parse(usersData);
@@ -244,6 +293,10 @@ app.post("/getBio", (req, res) => {
     try {
       details.id = id;
       myql.getBio(id, (error, responce) => {
+        if(error){
+          console.error("Error: " + error);
+          res.status(500).json({ error: "Database error" });
+        }
         if(responce){
           return res.status(500).json("Bio Data already exists");
         }
@@ -288,27 +341,56 @@ app.post("/getBio", (req, res) => {
 app.post("/uploadimage", upload.single("image"), (req, res) => {
   const uploadedImagePath = req.file.filename;
   const id = req.header("id");
-  console.log(uploadedImagePath);
 
   try {
-    const bioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
-    const userBio = bioData.find((u) => id === u.id);
-    if (userBio) {
-      userBio.image = uploadedImagePath;
-      bioData.map((user) => {
-        if (id === user.id) {
-          return userBio;
-        }
-      });
-      fs.writeFileSync("BioData.json", JSON.stringify(bioData));
-    } else {
-      res.json("problem in finding userBio");
-    }
+
+    myql.setImgName(uploadedImagePath, id);
+
+    // myql.getBio(id, (error, responce) => {
+    //   if(responce){
+    //     myql.setImgName(uploadedImagePath, id);
+    //     console.log("in responce : " + responce);
+    //   }
+    //   else{
+    //     console.log("db doesnt exist");
+    //     res.json("biodata does'nt exist");
+    //   }
+    // });
+
+    // const bioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
+    // const userBio = bioData.find((u) => id === u.id);
+    // if (userBio) {
+    //   userBio.image = uploadedImagePath;
+    //   bioData.map((user) => {
+    //     if (id === user.id) {
+    //       return userBio;
+    //     }
+    //   });
+    //   fs.writeFileSync("BioData.json", JSON.stringify(bioData));
+    // } else {
+    //   res.json("problem in finding userBio");
+    // }
     res.json("image uploaded succesfully");
   } catch (error) {
     res.json("error: " + error);
   }
 });
+
+function removeImg(id){
+  myql.getBio(id , (error, responce) => {
+    if(error){
+      console.error("Error: " + error);
+      res.status(500).json({ error: "Database error" });
+    }
+    else if(responce){
+      fs.unlink(`./images/${responce.image}`, (error) => {
+        if(error){
+          console.log("error while del image "+ error);
+        }
+      })
+    }
+  });
+}
 
 // deteting a users biodata from db
 
@@ -316,17 +398,20 @@ app.get("/deletebio", authenticateToken, (req, res) => {
   try {
     const id = req.header("id");
     if (id) {
-      const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
-      if (BioData) {
-        // console.log(id + 1);
-        const data = BioData.filter((b) => {
-          console.log(b.id);
-          return id != b.id;
-        });
-        console.log(data);
-        fs.writeFileSync("BioData.json", JSON.stringify(data));
-        res.json("bio-data deleted succesfully");
-      }
+      removeImg(id);
+      myql.delBio(id);
+
+      // const BioData = JSON.parse(fs.readFileSync("BioData.json", "utf8"));
+      // if (BioData) {
+      //   // console.log(id + 1);
+      //   const data = BioData.filter((b) => {
+      //     console.log(b.id);
+      //     return id != b.id;
+      //   });
+      //   console.log(data);
+      //   fs.writeFileSync("BioData.json", JSON.stringify(data));
+      //   res.json("bio-data deleted succesfully");
+      // }
     }
   } catch (error) {
     res.json("error occured while deleting biodata" + error);
@@ -339,37 +424,52 @@ app.post("/editbio", authenticateToken, (req, res) => {
     const id = req.header("id");
     const details = req.body;
 
-    if (id) {
-      try {
-        let bioData = [];
-
-        // Read existing JSON data, if the file exists
-
-        if (fs.existsSync("BioData.json")) {
-          const data = fs.readFileSync("BioData.json", "utf8");
-          if (data) {
-            bioData = JSON.parse(data);
-          }
-        }
-
-        // deleting old biodata
-        const bio = bioData.filter((b) => {
-          console.log(b.id);
-          return id != b.id;
-        });
-
-        details.id = id;
-
-        // Add new bio data and write to file
-        bio.push(details);
-        fs.writeFileSync("BioData.json", JSON.stringify(bio));
-
-        return res.status(200).json("Bio data edited successful");
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json("An error occurred : " + err);
+    myql.getBio(id, (error, responce) => {
+      if(error){
+        console.error("Error: " + error);
+        res.status(500).json({ error: "Database error" });
       }
-    }
+      if(responce){
+        removeImg(id);
+        myql.delBio(id);
+        myql.setBio(details);
+      }
+      else{
+        res.json("biodata does'nt exist");
+      }
+    })
+
+    // if (id) {
+    //   try {
+    //     let bioData = [];
+
+    //     // Read existing JSON data, if the file exists
+
+    //     if (fs.existsSync("BioData.json")) {
+    //       const data = fs.readFileSync("BioData.json", "utf8");
+    //       if (data) {
+    //         bioData = JSON.parse(data);
+    //       }
+    //     }
+
+    //     // deleting old biodata
+    //     const bio = bioData.filter((b) => {
+    //       console.log(b.id);
+    //       return id != b.id;
+    //     });
+
+    //     details.id = id;
+
+    //     // Add new bio data and write to file
+    //     bio.push(details);
+    //     fs.writeFileSync("BioData.json", JSON.stringify(bio));
+
+    //     return res.status(200).json("Bio data edited successful");
+    //   } catch (error) {
+    //     console.error(error);
+    //     return res.status(500).json("An error occurred : " + err);
+    //   }
+    // }
   }
   catch (error) {
     res.json("An error occured while editing bio data");

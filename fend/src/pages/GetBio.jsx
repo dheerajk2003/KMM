@@ -110,7 +110,7 @@ export default function GetBio(){
             <textarea name="about" id="about" cols="30" rows="5" onChange={handleChange}></textarea>
             <label htmlFor="aboutPar">what kind of partner are you looking for</label>
             <textarea name="aboutPar" id="aboutPar" cols="30" rows="5" onChange={handleChange}></textarea>
-            {/* <input type="file" name="image" onChange={handleFileChange} />                 */}
+            <input type="file" name="image" onChange={handleFileChange} />                
             <button type="submit">Submit</button>
         </form>
     )

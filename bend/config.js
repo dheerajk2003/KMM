@@ -1,3 +1,4 @@
+const { response } = require('express');
 const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
@@ -20,7 +21,7 @@ module.exports.registration = function registration(loginDetails){
             console.log("an error occured : " + error);
         }
         else{
-            console.log("responce last id" + res.insertId);
+            // console.log("responce last id" + res.insertId);
         }
     })
 }
@@ -31,7 +32,7 @@ module.exports.setBio = function setBio(bioData){
       console.log("an error occured : " + error);
     }
     else{
-      console.log("responce last id" + res.insertId);
+      // console.log("responce last id" + res.insertId);
     }
   });
 }
@@ -44,7 +45,7 @@ module.exports.getRegistered = function getRegistered(email, callback) {
       }
   
       if (res.length > 0) {
-        console.log(res[0]);
+        // console.log(res[0]);
         callback(null, res[0].email); // Pass the email to the callback if it exists
       } else {
         callback(null, null); // Pass null if the email doesn't exist
@@ -72,7 +73,61 @@ module.exports.getBio = function getBio(id, callback){
       return callback(error, null); // Pass the error to the callback
     }
     if(res){
+      // console.log(res[0]);
       callback(null, res[0]);
     }
   });
 };
+
+module.exports.setImgName = function setImgName(img,id){
+  console.log("entered in setImgName");
+  con.query("UPDATE Biodata SET image = ? where id = ?" , [img, id], (error, res) => {
+    if(error){
+      console.log("an error occured in img : " + error);
+    }
+    else if(res){
+      // console.log("responce last id in image" + res);
+    }
+    else{
+      console.log("res doesnt exist");
+    }
+  });
+}
+
+module.exports.delBio = function delBio(id){
+  con.query("Delete from Biodata where id = ?" , id, (error, res) => {
+    if(error){
+      console.log("an error occured in deleting : " + error);
+    }
+    else if(res){
+      // console.log("responce last id" + res);
+    }
+    else{
+      console.log("res doesnt exist");
+    }
+  })
+}
+
+module.exports.findPar = function findPar(gender, callback){
+  con.query("SELECT * FROM Biodata WHERE gender != ?", gender, (error, res) => {
+    if (error) {
+      console.log("Error: " + error);
+      // return callback(error, null); // Pass the error to the callback
+    }
+    if(res){
+      callback(null, res);
+    }
+  })
+}
+
+module.exports.searchPar = function searchPar(type, value, callback){
+  con.query(`SELECT * FROM Biodata WHERE ${type} LIKE ?`, value, (error, res) => {
+    if (error) {
+      console.log("Error: " + error);
+      // return callback(error, null); // Pass the error to the callback
+    }
+    if(res){
+      callback(null, res);
+    }
+  })
+}
