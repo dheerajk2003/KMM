@@ -12,3 +12,15 @@
 .infoImg{
     height: 40vh;
 }
+
+.LanImg{
+    background-image: url("lanBack.jpg");
+}
+
+.btnGrad{
+    background: #8A2387;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(160deg, #F27121, #E94057, #8A2387);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(160deg, #FDC830,#F37335); /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(160deg, #30a1fd,#3548f3); 
+    background: linear-gradient(160deg, #36D1DC,#5B86E5); 
+}

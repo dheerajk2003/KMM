@@ -4,10 +4,10 @@ export default function Nav(){
     return(
         <>
             <nav>
-                <Link to="/">Home</Link>
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
-                <Link to="/partner">Partner</Link>
+                <Link to="/" className="text-blue-700 text-xl m-1">KMM</Link>
+                <Link to="/login" className="text-blue-700 text-xl m-1">Login</Link>
+                <Link to="/register" className="text-blue-700 text-xl m-1">Register</Link>
+                <Link to="/partner" className="text-blue-700 text-xl m-1">Partner</Link>
             </nav>
         </>
     )
