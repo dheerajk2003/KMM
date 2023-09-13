@@ -53,21 +53,19 @@ app.get("/", (req, res) => {
 app.get("/post:userId", authenticateToken, (req, res) => {
   const { userId } = req.params;
   if (userId) {
-    myql.login(
-      null,
-      (error, responce) => {
-        if (error) {
-          console.log("error : " + error);
-          res.json(error);
-        }
-        if (responce) {
-          res.status(200).json(responce);
-        }
-      },
-      parseInt(userId)
-    );
+    myql.getBio(userId, (error, responce) => {
+      if (error) {
+        console.log("error " + error);
+        res.json(error);
+      }
+      if (responce) {
+        res.status(200).json(responce);
+      } else {
+        res.json("bio data does not exist");
+      }
+    });
   } else {
-    res.status.json("user does not exist");
+    res.status(500).json("error in finding Bio Data");
   }
 });
 
@@ -98,7 +96,20 @@ app.post("/partner", authenticateToken, async (req, res) => {
   try {
     const id = req.header("id");
     const { searchInput, searchType } = await req.body;
-    if (id) {
+    if (searchInput) {
+      console.log("searchINput rec", searchInput, searchType);
+      myql.searchPar(searchType, `%${searchInput}%`, (error, responce) => {
+        if (error) {
+          console.error("Error: " + error);
+          res.status(500).json({ error: "Database error" });
+        } else {
+          // console.log(responce);
+          res.json(responce);
+        }
+      }
+      );
+    }
+    else if (id) {
       myql.getBio(id, (error, responce) => {
         if (error) {
           console.error("Error: " + error);
@@ -106,31 +117,16 @@ app.post("/partner", authenticateToken, async (req, res) => {
         }
         if (responce) {
           const myGender = responce.gender;
-          if (searchInput) {
-            myql.searchPar(
-              searchType,
-              `%${searchInput}%`,
-              (error, responce) => {
-                if (error) {
-                  console.error("Error: " + error);
-                  res.status(500).json({ error: "Database error" });
-                } else {
-                  // console.log(responce);
-                  res.json(responce);
-                }
-              }
-            );
-          } else {
-            myql.findPar(myGender, (error, responce) => {
-              if (error) {
-                console.error("Error: " + error);
-                res.status(500).json({ error: "Database error" });
-              } else {
-                // console.log(responce);
-                res.json(responce);
-              }
-            });
-          }
+
+          myql.findPar(myGender, (error, responce) => {
+            if (error) {
+              console.error("Error: " + error);
+              res.status(500).json({ error: "Database error" });
+            } else {
+              // console.log(responce);
+              res.json(responce);
+            }
+          });
         }
       });
     } else {
@@ -173,14 +169,14 @@ app.post("/register", async (req, res) => {
       function (error, responce) {
         if (error) {
           console.error("Error: " + error);
-          res.status(500).json({ error: "Database error" });
+          res.status(500).json({ ok: false, error: "Database error" });
         } else {
           if (responce === email) {
-            res.json("User already exists");
+            res.json({ ok: false, error: "user already exists" });
           } else {
             const hashPassword = bcrypt.hashSync(password, salt);
             myql.registration({ email, hashPassword });
-            res.json("registered succesfully");
+            res.json({ ok: true, error: "registered succesfully" });
           }
         }
       },
@@ -202,7 +198,7 @@ app.post("/login", async (req, res) => {
       async (error, responce) => {
         if (error) {
           console.error("Error: " + error);
-          res.status(500).json({ error: "Database error" });
+          res.status(500).json({ ok: false, error: "Database error" });
         } else if (responce) {
           const passOk = await bcrypt.compare(password, responce.hashPassword);
           if (passOk) {
@@ -210,12 +206,12 @@ app.post("/login", async (req, res) => {
               responce.id,
               process.env.ACCESS_TOKEN_SECRET
             );
-            res.json({ accessToken: token });
+            res.json({ ok: true, error: "logged in succesfully", accessToken: token });
           } else {
             res.json("wrong email or password");
           }
         } else {
-          res.json("user not registered");
+          res.json({ ok: false, error: "user not registered" });
         }
       },
       null
