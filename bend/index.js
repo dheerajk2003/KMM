@@ -322,15 +322,20 @@ app.post("/editbio", authenticateToken, (req, res) => {
 // Authentication user token with db token
 
 function authenticateToken(req, res, next) {
-  const token = req.header("auth-token");
+  try{
+    const token = req.header("auth-token");
 
-  if (!token) {
-    return res.status(403).json("No token provided");
+    if (!token) {
+      return res.status(403).json("No token provided");
+    }
+
+    const verified = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.user = verified.user;
+    next();
   }
-
-  const verified = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  req.user = verified.user;
-  next();
+  catch(error){
+    console.log("wrong or illegal token", error);
+  }
 }
 
 const port = 4000;

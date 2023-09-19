@@ -2,11 +2,11 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: rgb(233, 233, 233);
+    /* background-color: rgb(233, 233, 233); */
 }
-body{
+/* body{
     background-color: gray;
-}
+} */
 
 .bioForm{
     display: flex;

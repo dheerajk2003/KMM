@@ -26,14 +26,14 @@ function App() {
 
   return (
     <div>
-        <BrowserRouter>
-          {/* {isLoggedIn ? <Home /> : <Landing />} */}
+      <BrowserRouter>
           <Routes>
             <Route path="/" element={isLoggedIn ? <Home /> : <Landing />} />
+            <Route path="/nav" element={<Nav />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             <Route path="/biodata" element={<GetBio />} />
-            <Route path="/info" element={<UserInfo />} />
+            <Route path="/info/:userId" element={<UserInfo />} />
             <Route path="/partner" element={<Partner />} />
             <Route path="/editbio" element={<EditBio />} />
             <Route path="/landing" element={<Landing />} />

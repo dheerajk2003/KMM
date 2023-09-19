@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import jwt_decode from "jwt-decode";
+import { NavLink } from "react-router-dom";
 
 export default function Partner() {
   const myToken = localStorage.getItem("KMMtoken");
@@ -22,9 +23,6 @@ export default function Partner() {
         setPartnerList(data);
       });
   }, []);
-  useEffect(() => {
-    console.log(partnerList);
-  },[partnerList]);
 
   function searchDb(e) {
     e.preventDefault();
@@ -39,7 +37,6 @@ export default function Partner() {
     })
       .then((responce) => responce.json())
       .then((data) => {
-        console.log(data);
         setPartnerList(data);
       });
   }
@@ -47,30 +44,24 @@ export default function Partner() {
   function Mappit() {
     const list = partnerList.map((l) => {
       return (
-        <div className="px-10 text-black">
-          <img
-            src={`http://localhost:4000/images/${l.image}`}
-            alt="not available"
-            className="infoImg"
-          />
-          <p>Name : {l.fullname}</p>
-          <p>Age : {l.age}</p>
-          <p>State : {l.state}</p>
-          <p>City : {l.city}</p>
-          <p>Cast : {l.cast}</p>
-          <p>Occupation : {l.occupation}</p>
-          <p>Gender : {l.gender}</p>
-          <p>Family-type : {l.family}</p>
-          <p>Education : {l.education}</p>
-          <p>About : {l.about}</p>
-          <p>Partner-preference : {l.aboutPar}</p>
-          <button
-            onClick={() => {
-              console.log(searchInput);
-            }}
-          >
-            phew
-          </button>
+        <div className="my-3 text-black bg-gray-100 h-auto rounded-3xl flex flex-row items-center justify-start shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+          <div className="h-52 w-52">
+            <img
+              src={`http://localhost:4000/images/${l.image}`}
+              alt="not available"
+              className="object-cover h-52 w-52 overflow-hidden rounded-3xl " 
+            />
+          </div>
+          <div className="ml-10">
+            <h3 className=" font-bold text-3xl capitalize">{l.fullname}</h3>
+            <div className="m-1 ml-3">
+              <p className="">Age : {l.age}</p>
+              <p>Cast : {l.cast}</p>
+              <p>Occupation : {l.occupation}</p>
+              <p>Education : {l.education}</p>
+              <NavLink to={`/info/${l.id}`} className="px-2 my-2 rounded-lg text-lg btnGrad text-primary-color ease-in-out duration-300 hover:scale-105">See More</NavLink>
+            </div>
+          </div>
         </div>
       );
     });
@@ -78,16 +69,18 @@ export default function Partner() {
   }
 
   return (
-    <>
-      <form id="searchForm">
+    <div className="max-w-screen-xl m-auto grid gap-2 sm:grid-cols-1 lg:grid-cols-2 text-black px-10">
+      <form id="searchForm" className="w-auto h-auto absolute top-0 right-24 my-5 bg-transparent">
         <input
+          className="bg-gray-300 h-7 px-3 rounded-md mx-1 shadow-lg"
           type="text"
-          placeholder={`search ${searchType}`}
+          placeholder={`search by ${searchType}`}
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <select
           defaultChecked="fullname"
+          className="bg-gray-300 h-7 w-5 px-3 rounded-md mx1 shadow-lg"
           onChange={(e) => setSearchType(e.target.value)}
         >
           <option value="">None</option>
@@ -96,9 +89,11 @@ export default function Partner() {
           <option value="cast">Caste</option>
           <option value="occupation">Occupation</option>
         </select>
-        <button onClick={searchDb}>Search</button>
+        <button onClick={searchDb} 
+          className="bg-gray-300 h-7 px-1 rounded-md mx-1 shadow-lg"
+        >🔍</button>
       </form>
       <Mappit />
-    </>
+    </div>
   );
 }

@@ -1,22 +1,28 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function UserInfo()
 {
     const myToken = localStorage.getItem('KMMtoken');
     const [myInfo, setMyInfo] = useState({});
     const [bioAvailable, setBioAvailable] = useState(false);
+    const {userId} = useParams();
 
     useEffect(() => {
-        getInfo();
+        if(userId){
+            getInfo(userId);
+        }
+        else{
+            const decodedToken = jwt_decode(myToken);
+            getInfo(decodedToken);
+        }
     }, []);
 
-    function getInfo(){
+    function getInfo(id){
         try{
-            if(myToken){
-                const decodedToken = jwt_decode(myToken);
-                fetch(`http://localhost:4000/info${decodedToken}`, {
+            if(id){
+                fetch(`http://localhost:4000/info${id}`, {
                     method: 'GET',
                     headers: {
                         "auth-token": `${myToken}`

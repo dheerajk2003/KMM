@@ -4,7 +4,7 @@ let token;
 let dTok;
 
 async function localToken(){
-    token = await localStorage.getItem("KMMtoken");
+    token = localStorage.getItem("KMMtoken");
     dTok = await jwt_decode(token);
 }
 
