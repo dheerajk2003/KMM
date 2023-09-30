@@ -4,8 +4,8 @@ import jwt_decode from "jwt-decode";
 export default function GetBio(){
 
     const [details, setDetails] = useState({
-        fullName: "",
-        age: "",
+        fullname: "",
+        dob: "",
         state: "",
         city: "",
         cast: "",

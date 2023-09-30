@@ -70,7 +70,7 @@ export default function UserInfo()
     function MapInfo(){
         const data =  <div>
                 <p className="item">{myInfo.fullname}</p>
-                <p className="item">{myInfo.age}</p>
+                <p className="item">{myInfo.dob}</p>
                 <p className="item">{myInfo.state}</p>
                 <p className="item">{myInfo.city}</p>
                 <p className="item">{myInfo.cast}</p>

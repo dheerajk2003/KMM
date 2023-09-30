@@ -55,7 +55,7 @@ export default function Partner() {
           <div className="ml-10">
             <h3 className=" font-bold text-3xl capitalize">{l.fullname}</h3>
             <div className="m-1 ml-3">
-              <p className="">Age : {l.age}</p>
+              <p className="">Age : {l.dob}</p>
               <p>Cast : {l.cast}</p>
               <p>Occupation : {l.occupation}</p>
               <p>Education : {l.education}</p>

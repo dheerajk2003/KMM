@@ -7,7 +7,7 @@ export default function EditBio(){
     const decodeToken = jwt_decode(token);
     const [details, setDetails] = useState({
         fullName: "",
-        age: "",
+        dob: "",
         state: "",
         city: "",
         cast: "",
