@@ -175,6 +175,7 @@ app.post("/register", async (req, res) => {
             res.json({ ok: false, error: "user already exists" });
           } else {
             const hashPassword = bcrypt.hashSync(password, salt);
+            console.log(hashPassword);
             myql.registration({ email, hashPassword });
             res.json({ ok: true, error: "registered succesfully" });
           }

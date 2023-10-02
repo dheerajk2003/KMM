@@ -4,9 +4,9 @@
     padding: 0;
     /* background-color: rgb(233, 233, 233); */
 }
-/* body{
+body{
     background-color: gray;
-} */
+}
 
 .bioForm{
     display: flex;
@@ -27,4 +27,13 @@
     background: linear-gradient(160deg, #FDC830,#F37335); /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(160deg, #30a1fd,#3548f3); 
     background: linear-gradient(160deg, #36D1DC,#5B86E5); 
+}
+
+.userinfo{
+    color: gray;
+}
+
+input{
+    color:gray;
+    background-color: black;
 }

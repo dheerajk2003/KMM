@@ -95,6 +95,12 @@ export default function UserInfo()
                 display: bioAvailable ? "inline" : "none"
             }}
             >Delete Bio</button>
+            {/* <button 
+            style={{
+                display: bioAvailable ? "none" : "inline"
+            }}
+            >{<Link to="/biodata" >Enter Bio</Link>}</button> */}
+            <button>{<Link to="/biodata" >Enter Bio</Link>}</button>
         </div>
     )
 }
