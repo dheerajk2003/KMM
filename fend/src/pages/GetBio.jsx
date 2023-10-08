@@ -77,8 +77,8 @@ export default function GetBio(){
 
     return (
         <form className="bioForm" onSubmit={handleSubmit} encType= "multipart/form-data">
-            <input type="text" name="fullName" id="fullName" placeholder="Enter Full Name" required onChange={handleChange}/>
-            <input type="number" name="age" id="age" placeholder="Enter Age" required onChange={handleChange}/>
+            <input type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required onChange={handleChange}/>
+            <input type="number" name="dob" id="dob" placeholder="Enter DOB" required onChange={handleChange}/>
             <input type="text" name="state" id="state" placeholder="Enter State" required onChange={handleChange}/>
             <input type="text" name="city" id="city" placeholder="Enter City" required onChange={handleChange}/>
             <input type="text" name="cast" id="cast" placeholder="Enter Cast / Nukh" required onChange={handleChange}/>

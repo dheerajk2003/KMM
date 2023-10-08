@@ -14,6 +14,7 @@ export default function Partner() {
       headers: {
         "auth-token": `${myToken}`,
         id: id,
+        "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({}),

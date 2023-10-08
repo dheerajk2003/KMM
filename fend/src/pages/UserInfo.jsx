@@ -20,6 +20,7 @@ export default function UserInfo()
     }, []);
 
     function getInfo(id){
+        console.log(id);
         try{
             if(id){
                 fetch(`http://localhost:4000/info${id}`, {
@@ -33,10 +34,11 @@ export default function UserInfo()
                     if(data.id){
                         setBioAvailable(true);
                         setMyInfo(data);
+                        console.log(data);
                     }
                     else{
                         setMyInfo({
-                            "fullName" : data
+                            "fullname" : data
                         });
                     }
                 });
@@ -49,6 +51,10 @@ export default function UserInfo()
     // setInterval(() => {
     //     console.log(myInfo);
     // }, 4000);
+
+    function LogOut(){
+        localStorage.removeItem("KMMtoken");
+    }
 
     function deleteBio(){
         const alertData = confirm("Do you realy want to delete bio data");
@@ -86,7 +92,7 @@ export default function UserInfo()
     }
 
     return(
-        <div>
+        <div className='userinfo'>
             <MapInfo />
             <button>{<Link to="/editbio" >Edit Bio</Link>}</button>
             <button 
@@ -95,11 +101,7 @@ export default function UserInfo()
                 display: bioAvailable ? "inline" : "none"
             }}
             >Delete Bio</button>
-            {/* <button 
-            style={{
-                display: bioAvailable ? "none" : "inline"
-            }}
-            >{<Link to="/biodata" >Enter Bio</Link>}</button> */}
+            <button onClick={LogOut}>Log Out</button>
             <button>{<Link to="/biodata" >Enter Bio</Link>}</button>
         </div>
     )

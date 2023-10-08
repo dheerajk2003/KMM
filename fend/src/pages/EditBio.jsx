@@ -95,7 +95,7 @@ export default function EditBio(){
     return (
         <form className="bioForm" onSubmit={handleSubmit} encType= "multipart/form-data">
             <input type="text" name="fullname" value={details.fullname} id="fullname" placeholder="Enter Full Name" required onChange={handleChange}/>
-            <input type="number" name="age" value={details.age} id="age" placeholder="Enter Age" required onChange={handleChange}/>
+            <input type="number" name="dob" value={details.dob} id="dob" placeholder="Enter DOB" required onChange={handleChange}/>
             <input type="text" name="state" value={details.state} id="state" placeholder="Enter State" required onChange={handleChange}/>
             <input type="text" name="city" value={details.city} id="city" placeholder="Enter City" required onChange={handleChange}/>
             <input type="text" name="cast" value={details.cast} id="cast" placeholder="Enter Cast / Nukh" required onChange={handleChange}/>
