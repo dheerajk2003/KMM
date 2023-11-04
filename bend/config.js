@@ -120,8 +120,9 @@ module.exports.findPar = function findPar(gender, callback){
   })
 }
 
-module.exports.searchPar = function searchPar(type, value, callback){
-  con.query(`SELECT * FROM Biodata WHERE ${type} LIKE ?`, value, (error, res) => {
+module.exports.searchPar = function searchPar(type, value, gen, callback){
+  console.log( type , value, gen);
+  con.query('SELECT * FROM Biodata WHERE gender != ? AND ?? LIKE ?', [gen, type, '%' + value + '%'], (error, res) => {
     if (error) {
       console.log("Error: " + error);
       // return callback(error, null); // Pass the error to the callback

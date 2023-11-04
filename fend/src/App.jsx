@@ -8,6 +8,7 @@ import GetBio from "./pages/GetBio";
 import UserInfo from "./pages/UserInfo";
 import Partner from "./pages/Partner";
 import EditBio from "./pages/EditBio";
+import Menu from "./pages/Menu";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState} from "react";
 
@@ -25,7 +26,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className=" min-h-screen">
       <BrowserRouter>
           <Routes>
             <Route path="/" element={isLoggedIn ? <Home /> : <Landing />} />
@@ -37,6 +38,7 @@ function App() {
             <Route path="/partner" element={<Partner />} />
             <Route path="/editbio" element={<EditBio />} />
             <Route path="/landing" element={<Landing />} />
+            <Route path="/menu" element={<Menu />} />
           </Routes>
         </BrowserRouter>
     </div>

@@ -40,6 +40,8 @@ const storage = multer.diskStorage({
   },
 });
 
+
+
 const upload = multer({ storage: storage });
 
 // Home Page
@@ -69,6 +71,8 @@ app.get("/post:userId", authenticateToken, (req, res) => {
   }
 });
 
+
+
 // Personal Info (Private Route)
 
 app.get("/info:userId", authenticateToken, (req, res) => {
@@ -90,15 +94,20 @@ app.get("/info:userId", authenticateToken, (req, res) => {
   }
 });
 
+
+
 // Serving list of people compatible to be partner.
 
 app.post("/partner", authenticateToken, async (req, res) => {
   try {
     const id = req.header("id");
-    const { searchInput, searchType } = await req.body;
+    let { searchInput, searchType, gen } = await req.body;
     if (searchInput) {
-      console.log("searchINput rec", searchInput, searchType);
-      myql.searchPar(searchType, `%${searchInput}%`, (error, responce) => {
+      //console.log("searchINput rec", searchInput, searchType, gen);
+      if (searchType == '') {
+        searchType = "fullname";
+      }
+      myql.searchPar(searchType, `%${searchInput}%`, gen, (error, responce) => {
         if (error) {
           console.error("Error: " + error);
           res.status(500).json({ error: "Database error" });
@@ -137,6 +146,8 @@ app.post("/partner", authenticateToken, async (req, res) => {
   }
 });
 
+
+
 // Serving Image
 
 app.get("/images/:imageUrl", (req, res) => {
@@ -157,6 +168,8 @@ app.get("/images/:imageUrl", (req, res) => {
     res.end(error);
   }
 });
+
+
 
 //Registration Page
 
@@ -187,6 +200,8 @@ app.post("/register", async (req, res) => {
     res.status(500).json(`${error}` + "error in registration");
   }
 });
+
+
 
 // Login
 
@@ -222,6 +237,8 @@ app.post("/login", async (req, res) => {
   }
 });
 
+
+
 // Uploading Bio data from form
 
 app.post("/getBio", (req, res) => {
@@ -250,6 +267,8 @@ app.post("/getBio", (req, res) => {
   }
 });
 
+
+
 // Uploading Image on db
 
 app.post("/uploadimage", upload.single("image"), (req, res) => {
@@ -263,6 +282,8 @@ app.post("/uploadimage", upload.single("image"), (req, res) => {
     res.json("error: " + error);
   }
 });
+
+
 
 // removing image from local storage
 
@@ -281,6 +302,8 @@ function removeImg(id) {
   });
 }
 
+
+
 // deteting a users biodata from db
 
 app.get("/deletebio", authenticateToken, (req, res) => {
@@ -294,6 +317,8 @@ app.get("/deletebio", authenticateToken, (req, res) => {
     res.json("error occured while deleting biodata" + error);
   }
 });
+
+
 
 // Updating bio data
 
@@ -320,10 +345,12 @@ app.post("/editbio", authenticateToken, (req, res) => {
   }
 });
 
+
+
 // Authentication user token with db token
 
 function authenticateToken(req, res, next) {
-  try{
+  try {
     const token = req.header("auth-token");
 
     if (!token) {
@@ -334,7 +361,7 @@ function authenticateToken(req, res, next) {
     req.user = verified.user;
     next();
   }
-  catch(error){
+  catch (error) {
     console.log("wrong or illegal token", error);
   }
 }

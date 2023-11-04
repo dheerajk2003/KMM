@@ -1,5 +1,6 @@
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
+import Nav from "./Nav";
 
 export default function GetBio(){
 
@@ -74,44 +75,91 @@ export default function GetBio(){
             alert("an error occured - " + e);
         }
     }
-
+10
     return (
-        <form className="bioForm" onSubmit={handleSubmit} encType= "multipart/form-data">
-            <input type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required onChange={handleChange}/>
-            <input type="number" name="dob" id="dob" placeholder="Enter DOB" required onChange={handleChange}/>
-            <input type="text" name="state" id="state" placeholder="Enter State" required onChange={handleChange}/>
-            <input type="text" name="city" id="city" placeholder="Enter City" required onChange={handleChange}/>
-            <input type="text" name="cast" id="cast" placeholder="Enter Cast / Nukh" required onChange={handleChange}/>
-            <input type="text" name="occupation" id="occupation" placeholder="Enter Occupation" required  onChange={handleChange}/>
-            <span>
-                <label htmlFor="gender">Gender : </label>
-                <input type="radio" name="gender" id="male" value="Male" onChange={handleChange}/> 
-                <label htmlFor="male">Male</label>
-                <input type="radio" name="gender" id="female" value="Female" onChange={handleChange}/> 
-                <label htmlFor="female">Female</label>
-            </span>
-            <label htmlFor="family">Family Type : </label>
-            <select name="family" id="family" onChange={handleChange}>
-                <option value="nuclear">Nuclear</option>
-                <option value="joint">Joint</option>
-                <option value="single">Single parent</option>
-            </select>
-            <label htmlFor="education">Education : </label>
-            <select name="education" id="education" onChange={handleChange}>
-                <option value="10">10th</option>
-                <option value="12">12th</option>
-                <option value="under graduate">Under Graduate</option>
-                <option value="post graduate">Post Graduate</option>
-                <option value="b.tech">B.Tech</option>
-                <option value="m.tech">M.Tech</option>
-                <option value="mbbs">MBBS</option>
-            </select>
-            <label htmlFor="about">About you and your Hobbies</label>
-            <textarea name="about" id="about" cols="30" rows="5" onChange={handleChange}></textarea>
-            <label htmlFor="aboutPar">what kind of partner are you looking for</label>
-            <textarea name="aboutPar" id="aboutPar" cols="30" rows="5" onChange={handleChange}></textarea>
-            <input type="file" name="image" onChange={handleFileChange} />                
-            <button type="submit">Submit</button>
-        </form>
+        <div className="flex flex-col items-center justify-center">
+            <Nav />
+            <div className="w-screen px-40"> 
+                <h3 className="text-center text-3xl font-bold text-gray-700 mb-6">Enter your Biodata</h3>
+                <form className="bioForm text-xl" onSubmit={handleSubmit} encType= "multipart/form-data">
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="fullname">Enter Full Name</label>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="fullname" id="fullname"  required onChange={handleChange}/>
+                    </div> 
+                        
+                        
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="state">Enter State</label>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="state" id="state" placeholder="" required onChange={handleChange}/>
+                    </div> 
+                        
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="city">Enter City</label>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="city" id="city" placeholder="" required onChange={handleChange}/>
+                    </div> 
+                        
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="cast">Enter Cast / Nukh</label>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="cast" id="cast" placeholder="" required onChange={handleChange}/>
+                    </div> 
+                        
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="occupation">Occupation</label>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="occupation" id="occupation" placeholder="" required  onChange={handleChange}/>
+                    </div> 
+
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="dob">Enter DOB</label>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="date" name="dob" id="dob" placeholder="" required onChange={handleChange}/>
+                    </div> 
+                        
+                    <span className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="gender">Gender : </label>
+                        <span className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md">
+                            <input type="radio" name="gender" id="male" value="Male" onChange={handleChange}/> 
+                            <label htmlFor="male">Male</label>
+                            <input className="ml-3" type="radio" name="gender" id="female" value="Female" onChange={handleChange}/> 
+                            <label htmlFor="female">Female</label>
+                        </span>
+                    </span>
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="family">Family Type : </label>
+                        <select className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="family" id="family" required onChange={handleChange}>
+                            <option value="nuclear">Nuclear</option>
+                            <option value="joint">Joint</option>
+                            <option value="alone">Alone</option>
+                        </select>
+                    </div>
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="education">Education : </label>
+                        <select className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="education" id="education" required onChange={handleChange}>
+                            <option value="10">10th</option>
+                            <option value="12">12th</option>
+                            <option value="under graduate">Under Graduate</option>
+                            <option value="post graduate">Post Graduate</option>
+                            <option value="b.tech">B.Tech</option>
+                            <option value="m.tech">M.Tech</option>
+                            <option value="mbbs">MBBS</option>
+                        </select>
+                    </div>
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="about">About you</label>
+                        <textarea className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="about" id="about" rows="1" required onChange={handleChange}></textarea>
+                    </div>
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <label className="text-gray-600" htmlFor="aboutPar">Partner Preference</label>
+                        <textarea className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="aboutPar" id="aboutPar" rows="1" required onChange={handleChange}></textarea>
+                    </div>
+                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                        <div >
+                            <label className="text-gray-600" htmlFor="image">Upload your Full Image</label>
+                            <p className="text-gray-600">(Do not upload filtered or snapchat pics)</p>
+                        </div>
+                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="file" name="image" required onChange={handleFileChange} />                
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
     )
 }

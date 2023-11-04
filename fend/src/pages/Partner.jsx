@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import jwt_decode from "jwt-decode";
 import { NavLink } from "react-router-dom";
+import { takeBioData } from "./globalFuncs";
+import { RedSmallButton } from "../components/buttons/redButton";
 
 export default function Partner() {
   const myToken = localStorage.getItem("KMMtoken");
@@ -8,6 +10,7 @@ export default function Partner() {
   const [partnerList, setPartnerList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchType, setSearchType] = useState("");
+  const [gen, setGen] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:4000/partner", {
@@ -25,16 +28,37 @@ export default function Partner() {
       });
   }, []);
 
-  function searchDb(e) {
+  async function searchDb(e) {
     e.preventDefault();
-    fetch("http://localhost:4000/partner", {
+    // takeBioData((error, Data) => {
+    //   if(error){
+    //     console.log(error);
+    //   }
+    //   setGen(Data.gender);
+    // })
+
+    await fetch(`http://localhost:4000/post${id}`, {
+        method: "GET",
+        headers: {
+          "auth-token": `${myToken}`,
+        },
+      })
+        .then((responce) => responce.json())
+        .then((data) => {
+          setGen(data.gender);
+          // alert("data recieved");
+      });
+
+    console.log("from partner");
+      console.log(gen);
+    await fetch("http://localhost:4000/partner", {
       headers: {
         "auth-token": `${myToken}`,
         id: id,
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ searchInput, searchType }),
+      body: JSON.stringify({ searchInput, searchType, gen }),
     })
       .then((responce) => responce.json())
       .then((data) => {
@@ -45,22 +69,23 @@ export default function Partner() {
   function Mappit() {
     const list = partnerList.map((l) => {
       return (
-        <div className="my-3 text-black bg-gray-100 h-auto rounded-3xl flex flex-row items-center justify-start shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
-          <div className="h-52 w-52">
+        <div className="my-3 mx-5 text-black bg-gray-100 h-auto rounded-3xl flex flex-row items-center justify-start border">
+          <div className="h-60 w-60">
             <img
               src={`http://localhost:4000/images/${l.image}`}
               alt="not available"
-              className="object-cover h-52 w-52 overflow-hidden rounded-3xl " 
+              className="object-cover h-60 w-60 overflow-hidden rounded-3xl " 
             />
           </div>
-          <div className="ml-10">
+          <div className="ml-5">
             <h3 className=" font-bold text-3xl capitalize">{l.fullname}</h3>
             <div className="m-1 ml-3">
-              <p className="">Age : {l.dob}</p>
-              <p>Cast : {l.cast}</p>
-              <p>Occupation : {l.occupation}</p>
-              <p>Education : {l.education}</p>
-              <NavLink to={`/info/${l.id}`} className="px-2 my-2 rounded-lg text-lg btnGrad text-primary-color ease-in-out duration-300 hover:scale-105">See More</NavLink>
+              <p className="text-gray-600">Age : {l.dob}</p>
+              <p className="text-gray-600">Cast : {l.cast}</p>
+              <p className="text-gray-600">Occupation : {l.occupation}</p>
+              <p className="text-gray-600">Education : {l.education}</p>
+              <RedSmallButton name={<NavLink to={`/info/${l.id}`}>See More</NavLink>} />
+              {/* <NavLink to={`/info/${l.id}`} className="px-2 my-2 rounded-lg text-lg btnGrad text-primary-color ease-in-out duration-300 hover:scale-105">See More</NavLink> */}
             </div>
           </div>
         </div>
@@ -85,7 +110,7 @@ export default function Partner() {
           onChange={(e) => setSearchType(e.target.value)}
         >
           <option value="">None</option>
-          <option value="fullname">Name</option>
+          <option value="fullname" selected="true">Name</option>
           <option value="city">City</option>
           <option value="cast">Caste</option>
           <option value="occupation">Occupation</option>
