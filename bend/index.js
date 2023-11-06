@@ -8,6 +8,7 @@ const fs = require("fs");
 const multer = require("multer");
 
 const myql = require("./config");
+const { resolve } = require("path");
 // const { receiveMessageOnPort } = require("worker_threads");
 myql.connection();
 
@@ -293,7 +294,7 @@ function removeImg(id) {
       console.error("Error: " + error);
       res.status(500).json({ error: "Database error" });
     } else if (responce) {
-      fs.unlink(`./images/${responce.image}`, (error) => {
+      fs.unlink(`images/${responce.image}`, (error) => {
         if (error) {
           console.log("error while del image " + error);
         }
@@ -333,7 +334,9 @@ app.post("/editbio", authenticateToken, (req, res) => {
         res.status(500).json({ error: "Database error" });
       }
       if (responce) {
-        removeImg(id);
+        if(details.image != responce.image){
+          removeImg(id);
+        }
         myql.delBio(id);
         myql.setBio(details);
       } else {

@@ -27,7 +27,7 @@ export default function Nav() {
           KMM
         </Link>
         
-        <Link to="/menu" className="h-12 w-12 mx-5 rounded-full overflow-hidden ">
+        <Link to="/menu" className="h-12 w-12 mx-5 rounded-full overflow-hidden flex items-center justify-center">
           <img
             src={`http://localhost:4000/images/${user.image}`}
             alt="image"

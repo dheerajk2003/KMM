@@ -1,8 +1,9 @@
 import { useState } from "react";
 import jwt_decode from "jwt-decode";
 import Nav from "./Nav";
+import RedButton from "../components/buttons/redButton";
 
-export default function GetBio(){
+export default function GetBio() {
 
     const [details, setDetails] = useState({
         fullname: "",
@@ -17,122 +18,122 @@ export default function GetBio(){
         about: "",
         aboutPar: ""
     })
-    const [userImage , setUserImage] = useState(null);
+    const [userImage, setUserImage] = useState(null);
 
-    function handleChange(e){
-         const {name, value} = e.target; 
-         setDetails((prevData) => {
-            return {...prevData , [name] : value};
-         });
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setDetails((prevData) => {
+            return { ...prevData, [name]: value };
+        });
     }
 
-    function handleFileChange(e){
+    function handleFileChange(e) {
         setUserImage(e.target.files[0]);
     }
 
-    function handleSubmit(e){
+    function handleSubmit(e) {
         e.preventDefault();
         let decodeToken;
-        try{
+        try {
             const token = localStorage.getItem("KMMtoken");
             decodeToken = jwt_decode(token);
             setDetails((prevData) => {
-                return {...prevData , "id": `${decodeToken}`}
+                return { ...prevData, "id": `${decodeToken}` }
             })
             console.log(details, token, decodeToken);
             fetch("http://localhost:4000/getBio", {
                 method: 'POST',
-                headers:{
+                headers: {
                     "id": decodeToken,
                     "auth-token": token,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(details)
             }).then(responce => responce.json())
-            .then(data => alert(data));
+                .then(data => alert(data));
         }
-        catch(e){
+        catch (e) {
             console.log(e);
         }
-        try{
-            if(userImage){
+        try {
+            if (userImage) {
                 const formData = new FormData();
                 formData.append('image', userImage);
-                fetch("http://localhost:4000/uploadimage" , {
+                fetch("http://localhost:4000/uploadimage", {
                     method: 'POST',
                     body: formData,
                     headers: {
                         "id": decodeToken
                     }
                 })
-                .then(responce => responce.json())
-                .then((data) => {
-                    console.log(data);
-                })
+                    .then(responce => responce.json())
+                    .then((data) => {
+                        console.log(data);
+                    })
             }
         }
-        catch(e){
+        catch (e) {
             alert("an error occured - " + e);
         }
     }
-10
+    10
     return (
         <div className="flex flex-col items-center justify-center">
             <Nav />
-            <div className="w-screen px-40"> 
+            <div className="w-screen px-40 flex flex-col items-center justify-center">
                 <h3 className="text-center text-3xl font-bold text-gray-700 mb-6">Enter your Biodata</h3>
-                <form className="bioForm text-xl" onSubmit={handleSubmit} encType= "multipart/form-data">
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="fullname">Enter Full Name</label>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="fullname" id="fullname"  required onChange={handleChange}/>
-                    </div> 
-                        
-                        
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="state">Enter State</label>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="state" id="state" placeholder="" required onChange={handleChange}/>
-                    </div> 
-                        
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="city">Enter City</label>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="city" id="city" placeholder="" required onChange={handleChange}/>
-                    </div> 
-                        
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="cast">Enter Cast / Nukh</label>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="cast" id="cast" placeholder="" required onChange={handleChange}/>
-                    </div> 
-                        
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="occupation">Occupation</label>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="text" name="occupation" id="occupation" placeholder="" required  onChange={handleChange}/>
-                    </div> 
+                <form className="bioForm text-sm w-1/2 flex flex-col items-center justify-center" onSubmit={handleSubmit} encType="multipart/form-data">
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="fullname">Name</label>
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required onChange={handleChange} />
+                    </div>
 
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="dob">Enter DOB</label>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="date" name="dob" id="dob" placeholder="" required onChange={handleChange}/>
-                    </div> 
-                        
-                    <span className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="gender">Gender : </label>
-                        <span className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md">
-                            <input type="radio" name="gender" id="male" value="Male" onChange={handleChange}/> 
+
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="state">State</label>
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="state" id="state" placeholder="Enter your State Name" required onChange={handleChange} />
+                    </div>
+
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="city">City</label>
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="city" id="city" placeholder="Enter your City Name" required onChange={handleChange} />
+                    </div>
+
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="cast">Cast</label>
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="cast" id="cast" placeholder="Enter your Cast or Nukh" required onChange={handleChange} />
+                    </div>
+
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="occupation">Occupation</label>
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="occupation" id="occupation" placeholder="Enter your Occupation" required onChange={handleChange} />
+                    </div>
+
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="dob">DOB</label>
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="date" name="dob" id="dob" placeholder="Enter Date of Birth" required onChange={handleChange} />
+                    </div>
+
+                    <span className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="gender">Gender</label>
+                        <span className="w-full px-3 h-1/2 bg-stone-200 rounded-md">
+                            <input type="radio" name="gender" id="male" value="Male" onChange={handleChange} />
                             <label htmlFor="male">Male</label>
-                            <input className="ml-3" type="radio" name="gender" id="female" value="Female" onChange={handleChange}/> 
+                            <input className="ml-3" type="radio" name="gender" id="female" value="Female" onChange={handleChange} />
                             <label htmlFor="female">Female</label>
                         </span>
                     </span>
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="family">Family Type : </label>
-                        <select className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="family" id="family" required onChange={handleChange}>
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="family">Family Type</label>
+                        <select className="w-full px-3 h-1/2 bg-stone-200 rounded-md" name="family" id="family" required onChange={handleChange}>
                             <option value="nuclear">Nuclear</option>
                             <option value="joint">Joint</option>
                             <option value="alone">Alone</option>
                         </select>
                     </div>
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <label className="text-gray-600" htmlFor="education">Education : </label>
-                        <select className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="education" id="education" required onChange={handleChange}>
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
+                        <label className="text-gray-600" htmlFor="education">Education</label>
+                        <select className="w-full px-3 h-1/2 bg-stone-200 rounded-md" name="education" id="education" required onChange={handleChange}>
                             <option value="10">10th</option>
                             <option value="12">12th</option>
                             <option value="under graduate">Under Graduate</option>
@@ -142,22 +143,28 @@ export default function GetBio(){
                             <option value="mbbs">MBBS</option>
                         </select>
                     </div>
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                    <div className="w-full my-1 flex flex-col items-start justify-center">
                         <label className="text-gray-600" htmlFor="about">About you</label>
-                        <textarea className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="about" id="about" rows="1" required onChange={handleChange}></textarea>
+                        <textarea className="w-full px-3 h-full bg-stone-200 rounded-md" name="about" id="about" rows="3" placeholder="Enter your hobbies, interests, likings, etc" required onChange={handleChange}></textarea>
                     </div>
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
+                    <div className="w-full my-1 flex flex-col items-start justify-center ">
                         <label className="text-gray-600" htmlFor="aboutPar">Partner Preference</label>
-                        <textarea className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" name="aboutPar" id="aboutPar" rows="1" required onChange={handleChange}></textarea>
+                        <textarea className="w-full px-3 h-full bg-stone-200 rounded-md" name="aboutPar" id="aboutPar" rows="3" placeholder="Enter what kind of partner you want" required onChange={handleChange}></textarea>
                     </div>
-                    <div className="flex flex-row items-center justify-end h-10 pr-1/3">
-                        <div >
-                            <label className="text-gray-600" htmlFor="image">Upload your Full Image</label>
-                            <p className="text-gray-600">(Do not upload filtered or snapchat pics)</p>
-                        </div>
-                        <input className="w-2/3 ml-5 mr-28 border border-gray-400 rounded-md" type="file" name="image" required onChange={handleFileChange} />                
+                    <div className="w-full my-1 flex flex-col items-start justify-center h-20">
+                        {/* <div > */}
+
+                        {/* <p className="text-gray-600">(Do not upload filtered or snapchat pics)</p> */}
+                        {/* </div> */}
+                        <label className="text-gray-600" htmlFor="image">Fullbody Image</label>
+                        <input className="w-full pt-2 px-3 h-full bg-stone-200 rounded-md" type="file" name="image" required onChange={handleFileChange} />
                     </div>
-                    <button type="submit">Submit</button>
+                    <div className="w-full my-1 mb-5 flex flex-col items-center justify-center h-20">
+                        <button className="w-full h-8 text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:bg-rose-800"
+                            onClick={handleSubmit}>Submit
+                        </button>
+                        {/* <RedButton name={"Submit"} func={handleSubmit} /> */}
+                    </div>
                 </form>
             </div>
         </div>
