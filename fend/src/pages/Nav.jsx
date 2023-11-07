@@ -24,7 +24,7 @@ export default function Nav() {
   return (
     <>
       <nav className="w-full h-16 mb-8 flex flex-row justify-between items-center ">
-        <Link to="/" className="text-rose-500 m-1 mx-5 text-3xl font-bold">
+        <Link to="/" className="text-rose-500 m-1 mx-5 text-4xl font-bold">
           KMM
         </Link>
         
