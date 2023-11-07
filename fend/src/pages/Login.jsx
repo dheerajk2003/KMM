@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { takeToken } from "./globalFuncs";
 
-export default function Login() {
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [eyeOn, setEyeOn] = useState(false);
@@ -39,8 +39,10 @@ export default function Login() {
           const accToken = data.accessToken;
           if (accToken) {
             localStorage.setItem("KMMtoken", accToken);
+            //props.setLogin(true);
             alert(data.error);
-            navigate("/");
+            //window.location.reload(false);
+            navigate("/feed");
           } else {
             alert(data.error);
           }

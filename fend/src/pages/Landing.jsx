@@ -1,6 +1,17 @@
+import { useEffect } from "react"
 import Login from "./Login"
 import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+
 export default function Landing(){
+    const navigate = useNavigate();
+    useEffect(() => {
+        const mytoken = localStorage.getItem("KMMtoken");
+        if(mytoken != null){
+            navigate("/feed");
+        }
+    });
+
     return (
         <div className="LanImg bg-fixed bg-center bg-no-repeat bg-cover w-screen h-screen flex flex-col items-center justify-center ">
             <nav className="w-screen h-12 absolute top-0 left-0 flex items-center justify-end ">

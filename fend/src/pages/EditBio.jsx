@@ -214,7 +214,7 @@ export default function EditBio(){
                         <input className="w-full pt-2 px-3 h-full bg-stone-200 rounded-md" type="file" name="image" onChange={handleFileChange} />
                     </div>
                     <div className="w-full my-1 mb-5 flex flex-col items-center justify-center h-20">
-                        <button className="w-full h-8 text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:bg-rose-800"
+                        <button className="w-full h-8 text-white bg-rose-600 hover:shadow-lg hover:shadow-rose-400 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center "
                             >Submit
                         </button>
                         {/* <RedButton name={"Submit"} func={handleSubmit} /> */}

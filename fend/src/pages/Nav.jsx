@@ -12,6 +12,7 @@ export default function Nav() {
       }
       if (data) {
         setUser(data);
+        console.log("data from nav ---------" + data);
       }
     });
   }, []);

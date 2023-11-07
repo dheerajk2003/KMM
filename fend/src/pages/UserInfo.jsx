@@ -78,7 +78,7 @@ export default function UserInfo()
         const data =  
         <div className='w-screen h-auto flex flex-row'>
             <div className='w-1/3 min-w-max h-full flex flex-col'>
-                <div className='w-full h-64'>
+                <div className='w-full max-w-md h-64 overflow-hidden object-cover'>
                     <img 
                         src={`http://localhost:4000/images/${myInfo.image}`} alt={myInfo.image}
                         className="h-full object-cover transition ease-out duration-300 hover:absolute hover:h-96 "

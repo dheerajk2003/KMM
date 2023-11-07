@@ -10,28 +10,25 @@ import Partner from "./pages/Partner";
 import EditBio from "./pages/EditBio";
 import Menu from "./pages/Menu";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useState} from "react";
+import { useEffect} from "react";
+//import { useNavigate } from "react-router-dom";
+
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
+  
+  //const navigate = useNavigate();
   useEffect(() => {
-    const myToken = localStorage.getItem("KMMtoken");
-    if (myToken) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    
   }, []);
 
   return (
     <div className=" min-h-screen">
       <BrowserRouter>
           <Routes>
-            <Route path="/" element={isLoggedIn ? <Home /> : <Landing />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/feed" element={<Home /> } />
             <Route path="/nav" element={<Nav />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Registration />} />
             <Route path="/biodata" element={<GetBio />} />
             <Route path="/info/:userId" element={<UserInfo />} />

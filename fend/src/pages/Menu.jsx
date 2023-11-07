@@ -4,8 +4,10 @@ import { Link, useParams } from 'react-router-dom';
 import { takeBioData } from './globalFuncs';
 import Nav from './Nav';
 import RedButton from '../components/buttons/redButton';
+import { useNavigate } from 'react-router-dom';
 
 export default function Menu(){
+    const navigate = useNavigate();
     const myToken = localStorage.getItem('KMMtoken');
     const [myInfo, setMyInfo] = useState({});
     const [bioAvailable, setBioAvailable] = useState(false);
@@ -54,6 +56,7 @@ export default function Menu(){
 
     function LogOut(){
         localStorage.removeItem("KMMtoken");
+        navigate("/");
     }
 
     function deleteBio(){
