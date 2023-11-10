@@ -9,6 +9,8 @@ const multer = require("multer");
 
 const myql = require("./config");
 const { resolve } = require("path");
+const { pid } = require("process");
+const { isTypedArray } = require("util/types");
 // const { receiveMessageOnPort } = require("worker_threads");
 myql.connection();
 
@@ -348,7 +350,64 @@ app.post("/editbio", authenticateToken, (req, res) => {
   }
 });
 
+app.post("/setRequest", authenticateToken, (req, res) => {
+  try{
+    const {person, requestor, name, reqType} = req.body;
+    console.log("from back- "+person, requestor, reqType);
+    myql.setRequest(person, requestor, name, reqType, (error,response) => {
+      if(error){
+        console.log(error);
+        res.json(error);
+      }
+      if(response){
+        // console.log(response);
+        res.json(response);
+      }
+    })
+  }
+  catch(error){
+    res.json("An error occured while requesting");
+  }
+})
 
+app.post("/getRequests", authenticateToken, (req, res) => {
+  try{
+    const {person, requestor} = req.body;
+    console.log("from getRequests" + person, requestor);
+    myql.getRequests(person, requestor, (error, responce)=> {
+      if(responce){
+        console.log(responce);
+        res.json(responce);
+      }
+      if(error){
+        res.json(error);
+      }
+    })
+  }
+  catch(error){
+    res.json("an error occured");
+  }
+})
+
+app.get("/getName", (req,res) => {
+  try{
+    const id = req.header("id");
+    if(id){
+      myql.getName(id,(error, responce) => {
+        if(responce){
+          res.json(responce);
+        }
+        if(error){
+          res.json(error);
+        }
+      })
+    }
+  }
+  catch(error){
+    res.json(error);
+    console.log(error);
+  }
+})
 
 // Authentication user token with db token
 

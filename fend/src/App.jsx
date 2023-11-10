@@ -9,6 +9,7 @@ import UserInfo from "./pages/UserInfo";
 import Partner from "./pages/Partner";
 import EditBio from "./pages/EditBio";
 import Menu from "./pages/Menu";
+import Notification from "./pages/Notification";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect} from "react";
 //import { useNavigate } from "react-router-dom";
@@ -26,6 +27,7 @@ function App() {
       <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/notification" element={<Notification/>} />
             <Route path="/feed" element={<Home /> } />
             <Route path="/nav" element={<Nav />} />
             <Route path="/login" element={<Login/>} />

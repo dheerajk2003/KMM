@@ -1,27 +1,29 @@
 import jwt_decode from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, resolvePath, useParams } from 'react-router-dom';
 import Nav from './Nav';
 
 export default function UserInfo()
 {
     const myToken = localStorage.getItem('KMMtoken');
+    const decodedToken = jwt_decode(myToken);
+    const [meInfo, setMeInfo] = useState({});
     const [myInfo, setMyInfo] = useState({});
-    const [bioAvailable, setBioAvailable] = useState(false);
     const {userId} = useParams();
+    const [isRequested, setIsRequested] = useState(false);
 
     useEffect(() => {
         if(userId){
             getInfo(userId);
-        }
-        else{
-            const decodedToken = jwt_decode(myToken);
             getInfo(decodedToken);
+        }
+        if(userId && decodedToken){
+            
+            getRequests();
         }
     }, []);
 
-    function getInfo(id){
-        console.log(id);
+    function getInfo(id){   
         try{
             if(id){
                 fetch(`http://localhost:4000/info${id}`, {
@@ -32,10 +34,11 @@ export default function UserInfo()
                 })
                 .then(responce => responce.json())
                 .then((data) => {
-                    if(data.id){
-                        setBioAvailable(true);
+                    if(id == decodedToken){
+                        setMeInfo(data);
+                    }
+                    else if(data?.id){
                         setMyInfo(data);
-                        console.log(data);
                     }
                     else{
                         setMyInfo({
@@ -49,28 +52,46 @@ export default function UserInfo()
             alert(error);
         }
     }
-    // setInterval(() => {
-    //     console.log(myInfo);
-    // }, 4000);
 
-    function LogOut(){
-        localStorage.removeItem("KMMtoken");
+    async function postRequest(e){
+        e.preventDefault()
+        await fetch("http://localhost:4000/setRequest",{
+            method: "POST",
+            headers: {
+                "auth-token": `${myToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({person:userId, requestor:decodedToken, name: meInfo.fullname, reqType: !isRequested})
+        })
+        .then(responce => responce.json())
+        .then((data) => {
+            if(data.affectedRows > 0 && data.insertId > 0){
+                setIsRequested(true);
+            }
+            else{
+                setIsRequested(false);
+            }
+        })
     }
 
-    function deleteBio(){
-        const alertData = confirm("Do you realy want to delete bio data");
-        if(alertData){
-            fetch("http://localhost:4000/deletebio", {
-                method: "GET",
-                headers: {
+    async function getRequests(){
+        try{
+            const responce = await fetch("http://localhost:4000/getRequests",{
+                method: "POST",
+                headers:{
                     "auth-token": `${myToken}`,
-                    "id" : jwt_decode(myToken)
-                }
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({person:userId, requestor:decodedToken})
             })
-            .then(responce => responce.json())
-            .then(data => alert(data));
-            getInfo();
-            setBioAvailable(false);
+            const data = await responce.json();
+            if(userId == data[0]?.personId){
+                setIsRequested(true);
+                const date = new Date();
+            }
+        }
+        catch(error){
+            console.log("error in getting requests");
         }
     }
 
@@ -78,7 +99,7 @@ export default function UserInfo()
         const data =  
         <div className='w-screen h-auto flex flex-row'>
             <div className='w-1/3 min-w-max h-full flex flex-col'>
-                <div className='w-full max-w-md h-64 overflow-hidden object-cover'>
+                <div className='w-full max-w-md h-52 overflow-hidden object-cover'>
                     <img 
                         src={`http://localhost:4000/images/${myInfo.image}`} alt={myInfo.image}
                         className="h-full object-cover transition ease-out duration-300 hover:absolute hover:h-96 "
@@ -99,6 +120,7 @@ export default function UserInfo()
                     <div className='text-xl'>
                         <span className='flex flex-row items-center gap-3'><p className='text-red-300'>Birth Date - </p><p className="item">{myInfo.dob}</p></span>
                         <span className='flex flex-row items-center gap-3'><p className='text-red-300'>Cast/Nukh - </p><p className="item capitalize">{myInfo.cast}</p></span>
+                        <button style={{backgroundColor: isRequested ? "gray" : "red"}} onClick={postRequest}>{isRequested ? "Requested" : "Request Insta"}</button>
                     </div>
                 </div>
                 <div className='h-auto'>
@@ -120,15 +142,6 @@ export default function UserInfo()
         <div className='userinfo mx-20'>
             <Nav />
             <MapInfo />
-            {/* <button>{<Link to="/editbio" >Edit Bio</Link>}</button>
-            <button 
-            onClick={() => deleteBio()}
-            style={{
-                display: bioAvailable ? "inline" : "none"
-            }}
-            >Delete Bio</button>
-            <button onClick={LogOut}>Log Out</button>
-            <button>{<Link to="/biodata" >Enter Bio</Link>}</button> */}
         </div>
     )
 }

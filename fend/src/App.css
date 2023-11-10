@@ -43,6 +43,10 @@ button{
     background-color: white;
 }
 
+#heart{
+    filter: drop-shadow(red 0px 0px 5px);
+}
+
 #arrow path{
     /* stroke-width: 3;
     stroke: red; */

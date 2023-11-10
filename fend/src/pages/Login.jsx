@@ -67,7 +67,7 @@ export default function Login(props) {
 
               <div>
                 <label
-                  for="email"
+                  htmlFor="userEmail"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your email
@@ -85,7 +85,7 @@ export default function Login(props) {
               </div>
               <div>
                 <label
-                  for="password"
+                  htmlFor="userPassword"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
@@ -115,7 +115,7 @@ export default function Login(props) {
               >
                 Sign in
               </button>
-              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <button type="button"
                   onClick={handleRegis}

@@ -122,6 +122,7 @@ module.exports.findPar = function findPar(gender, callback){
 
 module.exports.searchPar = function searchPar(type, value, gen, callback){
   console.log( type , value, gen);
+  // here ?? represents column name
   con.query('SELECT * FROM Biodata WHERE gender != ? AND ?? LIKE ?', [gen, type, '%' + value + '%'], (error, res) => {
     if (error) {
       console.log("Error: " + error);
@@ -131,4 +132,69 @@ module.exports.searchPar = function searchPar(type, value, gen, callback){
       callback(null, res);
     }
   })
+}
+
+module.exports.setRequest = function setRequest(pId, rId, name, rt, callback){
+  console.log("from db " + pId, rId, name, rt);
+  if(rt == true){
+    con.query(`insert into Requests(personId, requestorId, acceptedId, requestorName) select ?,?,NULL,? from dual where not exists(select 1 from Requests where personId = ${pId} AND requestorId = ${rId}) limit 1`, [pId, rId, name], (error, res) => {
+      if(error){
+        callback(error, null);
+      }
+      if(res){
+        callback(null, res);
+      }
+    })
+  }
+  else{
+    con.query('delete from Requests where personId = ? AND requestorId = ?', [pId, rId], (error, res) => {
+      if(error){
+        callback(error, null);
+      }
+      if(res){
+        callback(null, res);
+      }
+    })
+  }
+}
+
+module.exports.getRequests = function getRequests(pId, rId, callback){
+  console.log("from db getRequests" + pId, rId);
+  if(pId && rId){
+    con.query('select personId from Requests where personId = ? && requestorId = ?', [pId,rId], (error, res) => {
+      if(error){
+        callback(error, null);
+      }
+      if(res){
+        callback(null, res);
+      }
+    })
+  }
+  else if(pId){
+    con.query('select requestorId, requestorName from Requests where personId = ?', pId, (error,res) => {
+      if(error){
+        callback(error, null);
+      }
+      if(res){
+        callback(null, res);
+      }
+    })
+  }
+}
+
+module.exports.getName = function getName(id, callback){
+  try{
+    con.query("select fullname from Biodata where id = ?", id, (error, res) => {
+      if(error){
+        callback(error, null);
+      }
+      if(res){
+        callback(null, res);
+      }
+    })
+  }
+  catch(error){
+    console.log("error in getname" + error);
+    callback(error, null);
+  }
 }
