@@ -353,7 +353,7 @@ app.post("/editbio", authenticateToken, (req, res) => {
 app.post("/setRequest", authenticateToken, (req, res) => {
   try{
     const {person, requestor, name, reqType} = req.body;
-    console.log("from back- "+person, requestor, reqType);
+    // console.log("from back- "+person, requestor, reqType);
     myql.setRequest(person, requestor, name, reqType, (error,response) => {
       if(error){
         console.log(error);
@@ -373,10 +373,10 @@ app.post("/setRequest", authenticateToken, (req, res) => {
 app.post("/getRequests", authenticateToken, (req, res) => {
   try{
     const {person, requestor} = req.body;
-    console.log("from getRequests" + person, requestor);
+    // console.log("from getRequests" + person, requestor);
     myql.getRequests(person, requestor, (error, responce)=> {
       if(responce){
-        console.log(responce);
+        // console.log(responce);
         res.json(responce);
       }
       if(error){
@@ -406,6 +406,44 @@ app.get("/getName", (req,res) => {
   catch(error){
     res.json(error);
     console.log(error);
+  }
+})
+
+app.post("/accecptReq",authenticateToken, (req, res) => {
+  try{
+    const {person, requestor} = req.body;
+    console.log("in acptReq" , person, requestor);
+    myql.acceptReq(person,requestor, (error, responce) => {
+      if(responce){
+        res.json(responce);
+      }
+      if(error){
+        res.json(error);
+      }
+    })
+  }
+  catch(error){
+    res.json("error while accepting request");
+    console.log("error while accepting request" , error);
+  }
+})
+
+app.post("/deleteReq",authenticateToken,(req,res) => {
+  try{
+    const {person, requestor} = req.body;
+    console.log("from deleteReq ",person,requestor);
+    myql.deleteReq(person,requestor, (error, responce) => {
+      if(responce){
+        res.json(responce);
+      }
+      if(error){
+        res.json(error);
+      }
+    })
+  }
+  catch(error){
+    res.json("error while ignoring request");
+    console.log("error while ignoring request ",error);
   }
 })
 

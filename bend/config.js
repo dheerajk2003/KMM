@@ -135,7 +135,7 @@ module.exports.searchPar = function searchPar(type, value, gen, callback){
 }
 
 module.exports.setRequest = function setRequest(pId, rId, name, rt, callback){
-  console.log("from db " + pId, rId, name, rt);
+  // console.log("from db " + pId, rId, name, rt);/
   if(rt == true){
     con.query(`insert into Requests(personId, requestorId, acceptedId, requestorName) select ?,?,NULL,? from dual where not exists(select 1 from Requests where personId = ${pId} AND requestorId = ${rId}) limit 1`, [pId, rId, name], (error, res) => {
       if(error){
@@ -159,7 +159,7 @@ module.exports.setRequest = function setRequest(pId, rId, name, rt, callback){
 }
 
 module.exports.getRequests = function getRequests(pId, rId, callback){
-  console.log("from db getRequests" + pId, rId);
+  // console.log("from db getRequests" + pId, rId);
   if(pId && rId){
     con.query('select personId from Requests where personId = ? && requestorId = ?', [pId,rId], (error, res) => {
       if(error){
@@ -171,7 +171,7 @@ module.exports.getRequests = function getRequests(pId, rId, callback){
     })
   }
   else if(pId){
-    con.query('select requestorId, requestorName from Requests where personId = ?', pId, (error,res) => {
+    con.query('select requestorId, requestorName from Requests where personId = ? AND requestorId IS NOT NULL ', pId, (error,res) => {
       if(error){
         callback(error, null);
       }
@@ -195,6 +195,52 @@ module.exports.getName = function getName(id, callback){
   }
   catch(error){
     console.log("error in getname" + error);
+    callback(error, null);
+  }
+}
+
+module.exports.acceptReq = function accecptReq(id, requestor, callback){
+  console.log("in acptReq back end" , id, requestor);
+  try{
+    con.query(
+      'UPDATE Requests SET acceptedId = ? WHERE personId = ? AND requestorId = ?;',
+      [requestor, id, requestor],
+      (error, res) => {
+        if (error) {
+          callback(error, null);
+        }
+      }
+    );
+    con.query(
+      'UPDATE Requests SET requestorId = null WHERE personId = ? AND requestorId = ?',
+      [id, requestor],
+      (error, res) => {
+        if (error) {
+          callback(error, null);
+        } else {
+          callback(null, res);
+        }
+      }
+    );
+  }
+  catch(error){
+    callback(error, null);
+  }
+}
+
+module.exports.deleteReq = function deleteReq(id, requestorId, callback){
+  try{
+    console.log("from deleteReq bend", id, requestorId);
+    con.query("delete from Requests where personId = ? AND requestorId = ?",[id,requestorId],(error,res) => {
+      if(res){
+        callback(null, res);
+      }
+      if(error){
+        callback(error,null);
+      }
+    })
+  }
+  catch(error){
     callback(error, null);
   }
 }
