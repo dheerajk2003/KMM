@@ -389,6 +389,26 @@ app.post("/getRequests", authenticateToken, (req, res) => {
   }
 })
 
+app.post("/getAccepted",authenticateToken,(req,res) => {
+  try{
+    const {person, acceptor} = req.body;
+    console.log("in getadptd index",person, acceptor)
+    myql.getAccepted(person,acceptor,(error, responce) => {
+      if(responce){
+        // console.log(responce);
+        res.json(responce);
+      }
+      if(error){
+        res.json(error);
+      }
+    })
+  }
+  catch(error){
+    console.log("error while getting accepted requests" , error);
+    res.json("error while getting accepted requests");
+  }
+})
+
 app.get("/getName", (req,res) => {
   try{
     const id = req.header("id");
@@ -412,7 +432,6 @@ app.get("/getName", (req,res) => {
 app.post("/accecptReq",authenticateToken, (req, res) => {
   try{
     const {person, requestor} = req.body;
-    console.log("in acptReq" , person, requestor);
     myql.acceptReq(person,requestor, (error, responce) => {
       if(responce){
         res.json(responce);
@@ -431,7 +450,6 @@ app.post("/accecptReq",authenticateToken, (req, res) => {
 app.post("/deleteReq",authenticateToken,(req,res) => {
   try{
     const {person, requestor} = req.body;
-    console.log("from deleteReq ",person,requestor);
     myql.deleteReq(person,requestor, (error, responce) => {
       if(responce){
         res.json(responce);

@@ -8,7 +8,7 @@ export default function RedButton(props){
 
 export function RedSmallButton(props){
     return(
-        <button className="w-auto text-white bg-rose-600 hover:shadow-md transition-all duration-100 hover:shadow-rose-400 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center " 
+        <button style={props.btncss} className="w-auto text-white bg-rose-600 hover:shadow-md transition-all duration-100 hover:shadow-gray-600 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center " 
         onClick={props.func}>{props.name}
         </button>
     )

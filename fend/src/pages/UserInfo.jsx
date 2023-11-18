@@ -11,6 +11,7 @@ export default function UserInfo()
     const [myInfo, setMyInfo] = useState({});
     const {userId} = useParams();
     const [isRequested, setIsRequested] = useState(false);
+    const [isAccepted, setIsAccepted] = useState(false);
 
     useEffect(() => {
         if(userId){
@@ -18,10 +19,13 @@ export default function UserInfo()
             getInfo(decodedToken);
         }
         if(userId && decodedToken){
-            
             getRequests();
+            
         }
+        getAccepted();
     }, []);
+
+    console.log(isAccepted);
 
     function getInfo(id){   
         try{
@@ -95,6 +99,28 @@ export default function UserInfo()
         }
     }
 
+    async function getAccepted(){
+        try{
+            const responce = await fetch("http://localhost:4000/getAccepted",{
+                method: "POST",
+                headers:{
+                    "auth-token": `${myToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({person:userId, acceptor:decodedToken})
+            })
+            const data = await responce.json();
+            console.log(data);
+            if(userId == data[0]?.personId){
+                setIsAccepted(true);
+                const date = new Date();
+            }
+        }
+        catch(error){
+            console.log("error in getting requests", error);
+        }
+    }
+
     function MapInfo(){
         const data =  
         <div className='w-screen h-auto flex flex-row'>
@@ -112,6 +138,7 @@ export default function UserInfo()
                     <div className='flex flex-row m-2 text-lg items-center'><p className='w-1/3 text-gray-600'>Education - </p> <p className="item ml-2 capitalize ">{myInfo.education}</p></div> 
                     {/* <p className="item">{myInfo.gender}</p> */}
                     <div className='flex flex-row m-2 text-lg items-center'><p className='w-1/3 text-gray-600'>Family type - </p> <p className="item ml-2 capitalize">{myInfo.family}</p></div> 
+                    <div className='flex flex-row m-2 text-lg items-center' style={{display: isAccepted? "static": "none"}}><p className='w-1/3 text-gray-600'>Instagram - </p> <a className="item ml-2 capitalize text-rose-400" href={myInfo.instaId}>{myInfo.fullname}</a></div> 
                 </div>
             </div>
             <div className='w-1/2 h-2/3 flex-col'>
@@ -119,8 +146,9 @@ export default function UserInfo()
                     <p className="item text-4xl text-gray-700 font-bold mb-6">{myInfo.fullname}</p>
                     <div className='text-xl'>
                         <span className='flex flex-row items-center gap-3'><p className='text-red-300'>Birth Date - </p><p className="item">{myInfo.dob}</p></span>
-                        <span className='flex flex-row items-center gap-3'><p className='text-red-300'>Cast/Nukh - </p><p className="item capitalize">{myInfo.cast}</p></span>
-                        <button style={{backgroundColor: isRequested ? "gray" : "red"}} onClick={postRequest}>{isRequested ? "Requested" : "Request Insta"}</button>
+                        <span className='flex flex-row items-center gap-3 mb-2'><p className='text-red-300'>Cast/Nukh - </p><p className="item capitalize">{myInfo.cast}</p></span>
+                        <button className="w-auto text-white bg-rose-600 hover:shadow-md transition-all duration-100 hover:shadow-gray-600 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center " style={{backgroundColor: isRequested ? "gray" : "rgb(225 29 72 )", display: isAccepted ? "none" : "static"}} onClick={postRequest}>{isRequested ? "Requested" : "Request Insta"}</button>
+
                     </div>
                 </div>
                 <div className='h-auto'>

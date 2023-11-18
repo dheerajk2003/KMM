@@ -182,6 +182,23 @@ module.exports.getRequests = function getRequests(pId, rId, callback){
   }
 }
 
+module.exports.getAccepted = function getAccepted(id,acptId, callback){
+  console.log("in getacpt config ",id, acptId);
+  try{
+    con.query("select personId from Requests where personId = ? AND acceptedId = ?",[id,acptId],(error, res) => {
+      if(error){
+        callback(error, null);
+      }
+      if(res){
+        callback(null, res);
+      }
+    })
+  }
+  catch(error){
+    callback(error,null);   
+  }
+}
+
 module.exports.getName = function getName(id, callback){
   try{
     con.query("select fullname from Biodata where id = ?", id, (error, res) => {
@@ -200,7 +217,6 @@ module.exports.getName = function getName(id, callback){
 }
 
 module.exports.acceptReq = function accecptReq(id, requestor, callback){
-  console.log("in acptReq back end" , id, requestor);
   try{
     con.query(
       'UPDATE Requests SET acceptedId = ? WHERE personId = ? AND requestorId = ?;',
@@ -230,7 +246,6 @@ module.exports.acceptReq = function accecptReq(id, requestor, callback){
 
 module.exports.deleteReq = function deleteReq(id, requestorId, callback){
   try{
-    console.log("from deleteReq bend", id, requestorId);
     con.query("delete from Requests where personId = ? AND requestorId = ?",[id,requestorId],(error,res) => {
       if(res){
         callback(null, res);
