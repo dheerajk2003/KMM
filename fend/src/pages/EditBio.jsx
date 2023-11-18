@@ -136,7 +136,7 @@ export default function EditBio(){
             <Nav />
             <div className="w-screen px-40 flex flex-col items-center justify-center">
                 <h3 className="text-center text-3xl font-bold text-gray-700 mb-6">Enter your Biodata</h3>
-                <form className="bioForm text-sm w-1/2 flex flex-col items-center justify-center" onSubmit={handleSubmit} encType="multipart/form-data">
+                <form className="bioForm text-sm w-80 mx-6 flex flex-col items-center justify-center" onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
                         <label className="text-gray-600" htmlFor="fullname">Name</label>
                         <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" value={details.fullname} type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required onChange={handleChange} />
