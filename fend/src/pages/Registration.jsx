@@ -46,21 +46,21 @@ export default function Registration() {
   }
 
   return (
-    <section class="bg-gray-50 dark:bg-gray-900" onSubmit={handleSubmit}>
-      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <button onClick={toHome} class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+    <section class="bg-gray-50 h-screen" onSubmit={handleSubmit}>
+      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
+        <button onClick={toHome} class="flex items-center mb-3 text-4xl font-semibold text-gray-600 ">
           KMM
         </button>
-        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  ">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-600 md:text-2xl ">
               Sign up
             </h1>
             <form class="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
                   for="email"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Your email
                 </label>
@@ -70,14 +70,14 @@ export default function Registration() {
                   id="userEmail"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5  "
                   placeholder="name@company.com"
                   required="true" />
               </div>
               <div>
                 <label
                   for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Password
                 </label>
@@ -89,7 +89,7 @@ export default function Registration() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    class="inline mb-5 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="inline mb-5 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-full p-2.5"
                     required="true" />
                   <button
                     className="absolute inline right-3 top-2"
@@ -101,15 +101,15 @@ export default function Registration() {
               </div>
               <button
                 type="submit"
-                class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="w-full text-white bg-rose-600 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 Sign up
               </button>
-              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p class="text-sm font-light text-gray-500">
                 Already have an account?{" "}
                 <button
                   onClick={handleRegis}
-                  className="text-primary-400 text-bold hover:underline"
+                  className="text-rose-400 text-bold hover:underline"
                 >
                   Sign in
                 </button>

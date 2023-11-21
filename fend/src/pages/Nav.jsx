@@ -1,20 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
 import { takeBioData } from "./globalFuncs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { bioContext } from "../App";
 
 export default function Nav() {
+  const {biodata, setBiodata} = useContext(bioContext);
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    takeBioData((error, data) => {
-      if (error) {
-        console.log(error);
-      }
-      if (data) {
-        setUser(data);
-        console.log("data from nav ---------" + data);
-      }
-    });
+    console.log(biodata,"inside nav");
+    setUser(biodata);
+    if(!biodata.id){
+      console.log("not bio in nav");
+      takeBioData((error, data) => {
+        if (error) {
+          console.log(error);
+        }
+        if (data) {
+          setUser(data);
+        }
+      });
+    }
   }, []);
 
   function Show(){

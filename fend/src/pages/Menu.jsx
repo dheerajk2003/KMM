@@ -1,33 +1,37 @@
 import jwt_decode from 'jwt-decode';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useId, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { takeBioData } from './globalFuncs';
 import Nav from './Nav';
 import RedButton from '../components/buttons/redButton';
 import { useNavigate } from 'react-router-dom';
+import { bioContext } from '../App';
 
 export default function Menu(){
+    const {biodata, setBiodata} = useContext(bioContext);
     const navigate = useNavigate();
     const myToken = localStorage.getItem('KMMtoken');
+    const decodedToken = jwt_decode(myToken);
     const [myInfo, setMyInfo] = useState({});
     const [bioAvailable, setBioAvailable] = useState(false);
     const [hiddenMenu, setHiddenMenu] = useState(true);
     const {userId} = useParams();
 
     useEffect(() => {
-        if(userId){
-            getInfo(userId);
+        console.log("page refreshed");
+        setMyInfo(biodata);
+        if(!biodata.id){
+            getInfo(decodedToken);
         }
         else{
-            const decodedToken = jwt_decode(myToken);
-            getInfo(decodedToken);
+            setBioAvailable(true);
         }
     }, []);
 
     function getInfo(id){
-        console.log(id);
         try{
             if(id){
+                console.log(biodata,"not found biodata");
                 fetch(`http://localhost:4000/info${id}`, {
                     method: 'GET',
                     headers: {
@@ -39,7 +43,6 @@ export default function Menu(){
                     if(data.id){
                         setBioAvailable(true);
                         setMyInfo(data);
-                        console.log(data);
                     }
                     else{
                         setMyInfo({
@@ -72,6 +75,7 @@ export default function Menu(){
             .then(responce => responce.json())
             .then(data => alert(data));
             getInfo();
+            setBiodata({});
             setBioAvailable(false);
         }
     }

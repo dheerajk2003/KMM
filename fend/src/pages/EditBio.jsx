@@ -1,94 +1,121 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import Nav from "./Nav";
+import { bioContext } from "../App";
 
-export default function EditBio(){
-
+export default function EditBio() {
+    const { biodata, setBiodata } = useContext(bioContext);
     const token = localStorage.getItem("KMMtoken");
     const decodeToken = jwt_decode(token);
     const [details, setDetails] = useState({
-        fullName: "",
-        dob: "",
-        state: "",
-        city: "",
-        cast: "",
-        occupation: "",
-        gender: "",
-        family: "",
-        education: "",
-        about: "",
-        aboutPar: ""
+        // fullname: "",
+        // dob: "",
+        // state: "",
+        // city: "",
+        // cast: "",
+        // occupation: "",
+        // gender: "",
+        // family: "",
+        // education: "",
+        // about: "",
+        // aboutPar: ""
     })
-    const [userImage , setUserImage] = useState(null);
+    const [userImage, setUserImage] = useState(null);
+
 
     useEffect(() => {
-        fetch(`http://localhost:4000/info${decodeToken}`, {
-                    method: 'GET',
-                    headers: {
-                        "auth-token": `${token}`
-                    }
-                })
+        setDetails(biodata);
+
+        setTimeout(() => {
+        if (biodata.id != decodeToken) {
+            fetch(`http://localhost:4000/info${decodeToken}`, {
+                method: 'GET',
+                headers: {
+                    "auth-token": `${token}`
+                }
+            })
                 .then(responce => responce.json())
                 .then((data) => {
-                    if(data.id){
+                    if (data.id) {
+                        setBiodata(data);
                         setDetails(data);
                     }
-                    else{
+                    else {
                         alert(data);
                     }
                 });
+        }
+        }, 1000);
+
+
+        // fetch(`http://localhost:4000/info${decodeToken}`, {
+        //     method: 'GET',
+        //     headers: {
+        //         "auth-token": `${token}`
+        //     }
+        // })
+        //     .then(responce => responce.json())
+        //     .then((data) => {
+        //         if (data.id) {
+        //             setDetails(data);
+        //             console.log(details);
+        //         }
+        //         else {
+        //             alert(data);
+        //         }
+        //     });
     }, []);
 
-    function handleChange(e){
-         const {name, value} = e.target; 
-         setDetails((prevData) => {
-            return {...prevData , [name] : value};
-         });
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setDetails((prevData) => {
+            return { ...prevData, [name]: value };
+        });
     }
 
-    function handleFileChange(e){
+    function handleFileChange(e) {
         setUserImage(e.target.files[0]);
     }
 
-    function handleSubmit(e){
+    function handleSubmit(e) {
         e.preventDefault();
-        try{
+        try {
             setDetails((prevData) => {
-                return {...prevData , "id": `${decodeToken}`}
+                return { ...prevData, "id": `${decodeToken}` }
             })
             console.log(details, token, decodeToken);
             fetch("http://localhost:4000/editbio", {
                 method: 'POST',
-                headers:{
+                headers: {
                     "id": decodeToken,
                     "auth-token": token,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(details)
             }).then(responce => responce.json())
-            .then(data => alert(data));
+                .then(data => alert(data));
         }
-        catch(e){
+        catch (e) {
             console.log(e);
         }
-        try{
-            if(userImage){
+        try {
+            if (userImage) {
                 const formData = new FormData();
                 formData.append('image', userImage);
-                fetch("http://localhost:4000/uploadimage" , {
+                fetch("http://localhost:4000/uploadimage", {
                     method: 'POST',
                     body: formData,
                     headers: {
                         "id": decodeToken
                     }
                 })
-                .then(responce => responce.json())
-                .then((data) => {
-                    console.log(data);
-                })
+                    .then(responce => responce.json())
+                    .then((data) => {
+                        console.log(data);
+                    })
             }
         }
-        catch(e){
+        catch (e) {
             alert("an error occured - " + e);
         }
     }
@@ -215,7 +242,7 @@ export default function EditBio(){
                     </div>
                     <div className="w-full my-1 mb-5 flex flex-col items-center justify-center h-20">
                         <button className="w-full h-8 text-white bg-rose-600 hover:shadow-lg hover:shadow-rose-400 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center "
-                            >Submit
+                        >Submit
                         </button>
                         {/* <RedButton name={"Submit"} func={handleSubmit} /> */}
                     </div>

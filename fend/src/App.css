@@ -79,3 +79,20 @@ button{
         stroke-dashoffset: 0;
     }
 }
+
+#responsiveDiv{
+    z-index: 50;
+    margin-top:10rem;
+}
+
+@media screen and (max-width: 520px){
+    #unresDiv{
+        display:none;
+    }
+}
+
+@media screen and (min-width: 520px) {
+    #responsiveDiv{
+        display: none;
+    }
+}

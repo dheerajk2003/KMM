@@ -28,7 +28,7 @@ export default function Landing() {
             </nav>
             <div className="w-1/2 h-full z-10 flex flex-col items-start justify-center gap-5">
                 <h1 className="mt-20 text-slate-900 font-bold text-start text-6xl w-full">Your Perfect Match Awaits</h1>
-                <p className="w-full text-slate-900 text-start">Welcome to KMM, where your journey to finding lifelong love begins. Our platform is dedicated to helping individuals like you find their ideal life partner with ease and confidence.</p>
+                <p className="w-full text-slate-900 text-start">Welcome to Khatri Mitti Maiti Site, where your journey to finding lifelong love begins. Our platform is dedicated to helping individuals like you find their ideal life partner with ease and confidence.</p>
                 <Link to="register" className="w-44 h-10 text-white align-middle bg-rose-600 hover:shadow-lg hover:shadow-rose-400 active:scale-105 focus:outline-none focus:ring-none text-base font-bold  px-4 py-2 text-center">REGISTER</Link>
             </div>
             <div className="w-1/2 absolute right-0 bottom-0">

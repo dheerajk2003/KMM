@@ -3,8 +3,10 @@ import jwt_decode from "jwt-decode";
 import { NavLink } from "react-router-dom";
 import { takeBioData } from "./globalFuncs";
 import { RedSmallButton } from "../components/buttons/redButton";
+import { bioContext } from "../App";
 
 export default function Partner() {
+  const {biodata, setBiodata} = useContext(bioContext);
   const myToken = localStorage.getItem("KMMtoken");
   const id = jwt_decode(myToken);
   const [partnerList, setPartnerList] = useState([]);
@@ -13,6 +15,8 @@ export default function Partner() {
   const [gen, setGen] = useState("");
 
   useEffect(() => {
+    setGen(biodata.gender)
+
     fetch("http://localhost:4000/partner", {
       headers: {
         "auth-token": `${myToken}`,
@@ -37,7 +41,8 @@ export default function Partner() {
     //   setGen(Data.gender);
     // })
 
-    await fetch(`http://localhost:4000/post${id}`, {
+    if(!gen){
+      await fetch(`http://localhost:4000/post${id}`, {
         method: "GET",
         headers: {
           "auth-token": `${myToken}`,
@@ -48,6 +53,7 @@ export default function Partner() {
           setGen(data.gender);
           // alert("data recieved");
       });
+    }
 
     console.log("from partner");
       console.log(gen);
@@ -98,7 +104,7 @@ export default function Partner() {
     <div className="max-w-screen-xl m-auto grid gap-2 sm:grid-cols-1 lg:grid-cols-2 text-black px-10">
       <form id="searchForm" className="w-auto h-auto absolute top-0 right-24 my-5 bg-transparent">
         <input
-          className="bg-gray-300 h-7 px-3 rounded-md mx-1 shadow-lg"
+          className="bg-gray-300 h-7 px-3 w-44 rounded-md mx-1 shadow-lg"
           type="text"
           placeholder={`search by ${searchType}`}
           value={searchInput}
@@ -110,7 +116,7 @@ export default function Partner() {
           onChange={(e) => setSearchType(e.target.value)}
         >
           <option value="">None</option>
-          <option value="fullname" selected="true">Name</option>
+          <option value="fullname" selected={true}>Name</option>
           <option value="city">City</option>
           <option value="cast">Caste</option>
           <option value="occupation">Occupation</option>
