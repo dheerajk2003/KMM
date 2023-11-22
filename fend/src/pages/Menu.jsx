@@ -90,7 +90,7 @@ export default function Menu(){
             {/* <Link className='z-10 w-10 h-4' to="/">xfor</Link> */}
             {/* <Link className='z-10 w-10 h-4 absolute top-2 right-0' to="/" >X</Link>  */}
             <Nav />
-            <div className=" w-screen h-5/6 flex flex-col items-center justify-center gap-5 pt-5">
+            <div className=" w-screen h-5/6 flex flex-col items-center justify-center gap-5 pt-5 mt-24">
                 <div className='flex flex-col items-center gap-5'>
                     <img className="object-cover h-52 w-52 overflow-hidden rounded-full " src={`http://localhost:4000/images/${myInfo.image}`} alt='not found' />
                     <h2 className='text-5xl text-gray-600 font-bold'>{myInfo.fullname}</h2>

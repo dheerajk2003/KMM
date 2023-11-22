@@ -15,9 +15,10 @@ export default function Home() {
   return (
     <>
         <Nav />
-        <div style={{display: biodata.id ? "none":"static"}} id="biodataNot" className="w-screen h-screen text-center text-xl">
+        <div style={{display: biodata.id ? "none":"static"}} id="biodataNot" className="w-screen m-2 text-center text-xl">
             <h1>please enter biodata for furthur usage 
                 <RedButton name={"Biodata"} func={() => {navigate("/biodata")}} />
+                if entered already refresh page
             </h1>
         </div>
         <Partner />
