@@ -252,15 +252,13 @@ app.post("/getBio", (req, res) => {
     try {
       details.id = id;
       myql.getBio(id, (error, responce) => {
-        
-        if (responce) {
-          return res.status(500).json("Bio Data already exists");
-        }
-        else if (error) {
+        if (error) {
           console.error("Error: " + error);
           res.status(500).json({ error: "Database error" });
         }
-         else {
+        if (responce) {
+          return res.status(500).json("Bio Data already exists");
+        } else {
           myql.setBio(details);
         }
       });
@@ -282,7 +280,7 @@ app.post("/uploadimage", upload.single("image"), (req, res) => {
 
   try {
     myql.setImgName(uploadedImagePath, id);
-    res.json(res);
+    res.json("image uploaded succesfully");
   } catch (error) {
     res.json("error: " + error);
   }

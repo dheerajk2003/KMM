@@ -3,14 +3,11 @@ import Nav from "./Nav";
 import Partner from "./Partner";
 import RedButton from "../components/buttons/redButton";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { bioContext } from "../App";
 export default function Home() {
   const navigate = useNavigate();
   const {biodata, setBiodata} = useContext(bioContext);
-
-  // useEffect(() => {
-  // },[]);
 
   return (
     <>

@@ -2,10 +2,9 @@ import { useState } from "react";
 import jwt_decode from "jwt-decode";
 import Nav from "./Nav";
 import RedButton from "../components/buttons/redButton";
-import { useNavigate } from "react-router-dom";
 
 export default function GetBio() {
-    const navigate = useNavigate();
+
     const [details, setDetails] = useState({
         fullname: "",
         dob: "",
@@ -32,7 +31,7 @@ export default function GetBio() {
         setUserImage(e.target.files[0]);
     }
 
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
         let decodeToken;
         try {
@@ -42,7 +41,7 @@ export default function GetBio() {
                 return { ...prevData, "id": `${decodeToken}` }
             })
             console.log(details, token, decodeToken);
-            await fetch("http://localhost:4000/getBio", {
+            fetch("http://localhost:4000/getBio", {
                 method: 'POST',
                 headers: {
                     "id": decodeToken,
@@ -60,23 +59,21 @@ export default function GetBio() {
             if (userImage) {
                 const formData = new FormData();
                 formData.append('image', userImage);
-                await fetch("http://localhost:4000/uploadimage", {
+                fetch("http://localhost:4000/uploadimage", {
                     method: 'POST',
                     body: formData,
                     headers: {
                         "id": decodeToken
                     }
                 })
-                    .then(responce => responce)
+                    .then(responce => responce.json())
                     .then((data) => {
                         console.log(data);
-                        window.Location.reload(false);
                     })
             }
-            
         }
         catch (e) {
-            console.log("an error occured - " + e);
+            alert("an error occured - " + e);
         }
     }
     10
@@ -88,13 +85,13 @@ export default function GetBio() {
                 <form className="bioForm text-sm w-1/2 flex flex-col items-center justify-center" onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
                         <label className="text-gray-600" htmlFor="fullname">Name</label>
-                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required="true" onChange={handleChange} />
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required onChange={handleChange} />
                     </div>
 
 
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
                         <label className="text-gray-600" htmlFor="state">State</label>
-                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="state" id="state" placeholder="Enter your State Name" required={true} onChange={handleChange} />
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="state" id="state" placeholder="Enter your State Name" required onChange={handleChange} />
                     </div>
 
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
@@ -120,7 +117,7 @@ export default function GetBio() {
                     <span className="w-full my-1 flex flex-col items-start justify-center h-20 ">
                         <label className="text-gray-600" htmlFor="gender">Gender</label>
                         <span className="w-full px-3 h-1/2 bg-stone-200 rounded-md">
-                            <input type="radio" name="gender" id="male" value="Male" required onChange={handleChange} />
+                            <input type="radio" name="gender" id="male" value="Male" onChange={handleChange} />
                             <label htmlFor="male">Male</label>
                             <input className="ml-3" type="radio" name="gender" id="female" value="Female" onChange={handleChange} />
                             <label htmlFor="female">Female</label>
@@ -163,7 +160,8 @@ export default function GetBio() {
                         <input className="w-full pt-2 px-3 h-full bg-stone-200 rounded-md" type="file" name="image" required onChange={handleFileChange} />
                     </div>
                     <div className="w-full my-1 mb-5 flex flex-col items-center justify-center h-20">
-                        <button className="w-full h-8 text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:bg-rose-800">Submit
+                        <button className="w-full h-8 text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:bg-rose-800"
+                            onClick={handleSubmit}>Submit
                         </button>
                         {/* <RedButton name={"Submit"} func={handleSubmit} /> */}
                     </div>
