@@ -6,7 +6,7 @@ import { RedSmallButton } from "../components/buttons/redButton";
 import { bioContext } from "../App";
 
 export default function Partner() {
-  const {biodata, setBiodata} = useContext(bioContext);
+  const { biodata, setBiodata } = useContext(bioContext);
   const myToken = localStorage.getItem("KMMtoken");
   const id = jwt_decode(myToken);
   const [partnerList, setPartnerList] = useState([]);
@@ -41,7 +41,7 @@ export default function Partner() {
     //   setGen(Data.gender);
     // })
 
-    if(!gen){
+    if (!gen) {
       await fetch(`http://localhost:4000/post${id}`, {
         method: "GET",
         headers: {
@@ -52,11 +52,11 @@ export default function Partner() {
         .then((data) => {
           setGen(data.gender);
           // alert("data recieved");
-      });
+        });
     }
 
     console.log("from partner");
-      console.log(gen);
+    console.log(gen);
     await fetch("http://localhost:4000/partner", {
       headers: {
         "auth-token": `${myToken}`,
@@ -80,7 +80,7 @@ export default function Partner() {
             <img
               src={`http://localhost:4000/images/${l.image}`}
               alt="not available"
-              className="object-cover h-60 w-60 overflow-hidden rounded-3xl " 
+              className="object-cover h-60 w-60 overflow-hidden rounded-3xl "
             />
           </div>
           <div className="ml-5">
@@ -101,10 +101,10 @@ export default function Partner() {
   }
 
   return (
-    <div className="max-w-screen-xl m-auto grid gap-2 sm:grid-cols-1 lg:grid-cols-2 text-black px-10">
-      <form id="searchForm" className="w-auto h-auto absolute top-0 right-24 my-5 bg-transparent">
+    <div className="w-screen h-screen flex flex-col m-0 p-0">
+      <form id="searchForm" className="w-auto h-auto mx-auto right-24 bg-transparent translate-y-[-1rem]">
         <input
-          className="bg-gray-300 h-7 px-3 w-44 rounded-md mx-1 shadow-lg"
+          className="bg-gray-300 h-10 px-3 w-64 rounded-md mx-1 shadow-lg"
           type="text"
           placeholder={`search by ${searchType}`}
           value={searchInput}
@@ -112,7 +112,7 @@ export default function Partner() {
         />
         <select
           defaultChecked="fullname"
-          className="bg-gray-300 h-7 w-5 px-3 rounded-md mx1 shadow-lg"
+          className="bg-gray-300 h-10 w-24 px-3 rounded-md mx1 shadow-lg"
           onChange={(e) => setSearchType(e.target.value)}
         >
           <option value="">None</option>
@@ -121,11 +121,13 @@ export default function Partner() {
           <option value="cast">Caste</option>
           <option value="occupation">Occupation</option>
         </select>
-        <button onClick={searchDb} 
-          className="bg-gray-300 h-7 px-1 rounded-md mx-1 shadow-lg"
+        <button onClick={searchDb}
+          className="bg-gray-300 h-10 px-1 rounded-md mx-1 shadow-lg"
         >🔍</button>
       </form>
-      <Mappit />
+      <div className="max-w-screen-xl m-0 p-0 grid gap-2 sm:grid-cols-1 lg:grid-cols-2 text-black px-10">
+        <Mappit />
+      </div>
     </div>
   );
 }

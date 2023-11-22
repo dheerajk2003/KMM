@@ -50,13 +50,15 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="w-full h-16 mb-8 flex flex-row justify-between items-center ">
+      <nav className="w-full h-16 mb-5 flex flex-row justify-between items-center ">
         <Link to="/" className="text-rose-500 m-1 mx-5 text-4xl font-bold">
           KMM
         </Link>
-        
-        <Link to="/notification" style={{display: notifications ? "block" : "none"}} >
-          <div  className="bg-rose-600 h-10 w-24">{`${notifications}`}</div>
+        <div className="flex flex-row items-center justify-center">
+        <Link to="/notification" className="text-rose-500 text-3xl" style={{display: notifications ? "block" : "none"}} >
+          {/* <div  className="bg-rose-600 h-10 w-24">{`${notifications}`}</div> */}
+          {/* <i className="fa-regular fa-bell scale-150"></i> */}
+          <img src="notification.png" alt="" />
         </Link>
 
         <Link to="/menu" className="h-12 w-12 mx-5 rounded-full overflow-hidden flex items-center justify-center">
@@ -66,6 +68,7 @@ export default function Nav() {
             className="h-full object-cover"
           />
         </Link>
+        </div>
         {/* <Link to="/partner" className="text-blue-700 text-xl m-1">Partner</Link> */}
       </nav>
     </>
