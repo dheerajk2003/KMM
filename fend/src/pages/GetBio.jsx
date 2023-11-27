@@ -115,7 +115,7 @@ export default function GetBio() {
 
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
                         <label className="text-gray-600" htmlFor="instaId">Instagram</label>
-                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="instaId" id="instaId" placeholder="Enter Account Link (optional)" required onChange={handleChange} />
+                        <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="instaId" id="instaId" placeholder="Enter Account Link (optional)" onChange={handleChange} />
                     </div>
 
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">

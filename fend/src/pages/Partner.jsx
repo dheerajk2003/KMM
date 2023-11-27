@@ -75,7 +75,7 @@ export default function Partner() {
   function Mappit() {
     const list = partnerList.map((l) => {
       return (
-        <div className="my-3 mx-5 text-black bg-gray-100 h-auto rounded-3xl flex flex-row items-center justify-start border">
+        <div className="my-3 mx-5 text-black bg-gray-100 h-auto w-auto rounded-3xl flex flex-row items-center justify-start border">
           <div className="h-60 w-60">
             <img
               src={`http://localhost:4000/images/${l.image}`}
@@ -125,7 +125,10 @@ export default function Partner() {
           className="bg-gray-300 h-10 px-1 rounded-md mx-1 shadow-lg"
         >🔍</button>
       </form>
-      <div className="max-w-screen-xl m-0 p-0 grid gap-2 sm:grid-cols-1 lg:grid-cols-2 text-black px-10">
+      <div className="max-w-screen-xl m-0 p-0 grid gap-2 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3
+       "
+      //  sm:grid-cols-1 lg:grid-cols-2 xl:grid-col-3 2xl:grid-col-4 text-black px-10 
+      >
         <Mappit />
       </div>
     </div>

@@ -11,6 +11,7 @@ const myql = require("./config");
 const { resolve } = require("path");
 const { pid } = require("process");
 const { isTypedArray } = require("util/types");
+const {createTransport} = require("nodemailer");
 // const { receiveMessageOnPort } = require("worker_threads");
 myql.connection();
 
@@ -43,9 +44,27 @@ const storage = multer.diskStorage({
   },
 });
 
-
+async function sendMail(recEmail, pin){
+  await transponder.sendMail({
+      from:"dheerajkhatri",
+      to: recEmail,
+      subject: "saying hello",
+      html: "<h3>Verification Code</h3><p>"+pin+"</p>"
+  })
+}
 
 const upload = multer({ storage: storage });
+
+const transponder = createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+      user: "dheerajkhatri2003@gmail.com",
+      pass: "nydt dnau twvf vgkk"
+  }
+});
 
 // Home Page
 
@@ -233,8 +252,10 @@ app.post("/login", async (req, res) => {
               res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified : true });
             }
             else{
-              console.log("inside else Login");
-              res.json({ ok: true,error: "please verify email first", verified : false });
+              // sendMail(email,responce.vCode);
+              console.log(responce.vCode);
+              sendMail("lifivic339@notedns.com",responce.vCode);
+              res.json({ ok: true,error: "please verify email first, verification is send to your email", verified : false });
             }
 
           } else {
