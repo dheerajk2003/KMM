@@ -21,7 +21,7 @@ module.exports.registration = function registration(loginDetails){
             console.log("an error occured : " + error);
         }
         else{
-            // console.log("responce last id" + res.insertId);
+            console.log("responce last id" + res.insertId);
         }
     })
 }
@@ -62,6 +62,35 @@ module.exports.login = function login(email, callback, id) {
     if(res){
       callback(null, res[0]);
       // console.log("in db: " + res);
+    }
+  })
+}
+
+module.exports.getVerify = function setVerfify(email, vCode, callback){
+  try{
+    con.query("select id from Login where email = ? AND vCode = ?",[email, vCode],(error, res) => {
+      if(res){
+        callback(null, res);
+      }
+      if (error) {
+        console.log("Error: " + error);
+        return callback(error, null); // Pass the error to the callback
+      }
+    })
+  }
+  catch(error){
+    console.log("error while verifying ", error);
+  }
+}
+
+module.exports.setVerfify = function setVerfify(email,vCode,callback){
+  con.query("update Login set active = 1 where email = ? AND vCode = ?",[email, vCode],(error, res) => {
+    if(res){
+      callback(null, res);
+    }
+    if (error) {
+      console.log("Error: " + error);
+      return callback(error, null); // Pass the error to the callback
     }
   })
 }

@@ -5,7 +5,9 @@ import { takeToken } from "./globalFuncs";
 export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [vCode, setVCode] = useState("");
   const [eyeOn, setEyeOn] = useState(false);
+  const [codeOn, setCodeOn] = useState(false);
   // const history = useHistory();
   const navigate = useNavigate();
 
@@ -14,37 +16,40 @@ export default function Login(props) {
     navigate("/register");
   }
 
-  function toHome(e){
+  function toHome(e) {
     e.preventDefault();
     navigate("/");
   }
 
-  function toggleBtn(e){
+  function toggleBtn(e) {
     e.preventDefault();
     setEyeOn(eyeOn ? false : true);
   }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
+    console.log("called the func");
     try {
-      fetch("http://localhost:4000/login", {
+      fetch(`http://localhost:4000/${codeOn ? "verify" : "login"}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email:email, password: password, vCode:vCode }),
       })
         .then((response) => response.json())
         .then((data) => {
-          const accToken = data.accessToken;
-          if (accToken) {
-            localStorage.setItem("KMMtoken", accToken);
+          if (data.verified) {
+            console.log("inside if login");
+            localStorage.setItem("KMMtoken", data.accessToken);
             //props.setLogin(true);
             alert(data.error);
             //window.location.reload(false);
             navigate("/feed");
           } else {
+            console.log("from else in login" , data);
             alert(data.error);
+            setCodeOn(true);
           }
         });
     } catch (error) {
@@ -63,8 +68,8 @@ export default function Login(props) {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-600 md:text-2xl">
               Sign in to your account
             </h1>
+            {/* <form className="space-y-4 md:space-y-6"> */}
             <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit}>
-
               <div>
                 <label
                   htmlFor="userEmail"
@@ -92,7 +97,7 @@ export default function Login(props) {
                 </label>
                 <div className="relative">
                   <input
-                    type={eyeOn ? "text" : "password"} 
+                    type={eyeOn ? "text" : "password"}
                     name=""
                     id="userPassword"
                     value={password}
@@ -109,12 +114,31 @@ export default function Login(props) {
                   </button>
                 </div>
               </div>
+
+              {codeOn ? <div >
+                <label
+                  htmlFor="userEmail"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Verification Code
+                </label>
+                <input
+                  type="number"
+                  name="vCode"
+                  id="vCode"
+                  value={vCode}
+                  onChange={(e) => setVCode(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg  block w-full p-2.5"
+                  placeholder="* * * *"
+                  required="true"
+                />
+              </div>
+              : ""}
+
               <button
                 type="submit"
                 className="w-full text-white bg-rose-600 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                Sign in
-              </button>
+              >Sign In</button>
               <p className="text-sm font-light text-gray-500 ">
                 Don’t have an account yet?{" "}
                 <button type="button"

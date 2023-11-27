@@ -191,8 +191,10 @@ app.post("/register", async (req, res) => {
             res.json({ ok: false, error: "user already exists" });
           } else {
             const hashPassword = bcrypt.hashSync(password, salt);
-            console.log(hashPassword);
-            myql.registration({ email, hashPassword });
+            // console.log(hashPassword);
+            const vCode = Math.floor(Math.random() * 10000);
+            const active = 0;
+            myql.registration({ email, hashPassword, vCode, active });
             res.json({ ok: true, error: "registered succesfully" });
           }
         }
@@ -225,9 +227,18 @@ app.post("/login", async (req, res) => {
               responce.id,
               process.env.ACCESS_TOKEN_SECRET
             );
-            res.json({ ok: true, error: "logged in succesfully", accessToken: token });
+            console.log("active " , responce.active)
+            if(responce.active.readUInt8(0) === 1){
+              console.log("inside if Login");
+              res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified : true });
+            }
+            else{
+              console.log("inside else Login");
+              res.json({ ok: true,error: "please verify email first", verified : false });
+            }
+
           } else {
-            res.json("wrong email or password");
+            res.json({ ok: false, error: "email or password is wrong"});
           }
         } else {
           res.json({ ok: false, error: "user not registered" });
@@ -240,7 +251,44 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
+app.post("/verify",(req, res) => {
+  try{
+    const {email,vCode} = req.body;
+    console.log("from verify", vCode);
+    myql.getVerify(email,vCode, (error, responce) => {
+      if(responce){
+        console.log(responce);
+        if(responce.length > 0){
+          myql.setVerfify(email, vCode, (err, responce2) => {
+            if(responce2){
+              if(responce2.affectedRows > 0){
+                const token = jwt.sign(
+                  responce[0].id ,
+                  process.env.ACCESS_TOKEN_SECRET
+                );
+                res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified : true });
+              }
+            }
+            if(err){
+              console.log(err);
+              res.json({ok:false,error: "error while verifying"});
+            }
+          })
+        }
+        else{
+          res.json({ok:false,error: "wrong code"});
+        }
+      }
+      if(error){
+        console.log(error);
+        res.json({error:"error while verifying"})
+      }
+    })
+  }
+  catch(error){
+    console.log(error);
+  }
+})
 
 // Uploading Bio data from form
 

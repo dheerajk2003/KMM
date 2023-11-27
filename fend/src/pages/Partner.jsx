@@ -101,8 +101,8 @@ export default function Partner() {
   }
 
   return (
-    <div className="w-screen h-screen flex flex-col m-0 p-0">
-      <form id="searchForm" className="w-auto h-auto mx-auto right-24 bg-transparent translate-y-[-1.5rem]">
+    <div className="w-screen h-auto flex flex-col m-0 p-0">
+      <form id="searchForm" className="w-auto h-auto mx-auto bg-transparent translate-y-[-1.5rem]">
         <input
           className="bg-gray-300 h-10 px-3 w-64 rounded-md mx-1 shadow-lg"
           type="text"
