@@ -12,6 +12,7 @@ import Menu from "./pages/Menu";
 import Notification from "./pages/Notification";
 import RedButton from "./components/buttons/redButton";
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 //import { useNavigate } from "react-router-dom";
@@ -58,7 +59,7 @@ function App() {
 
       <div className=" min-h-screen" id="unresDiv">
         <bioContext.Provider value={{ biodata,setBiodata }}>
-          <BrowserRouter>
+          <HashRouter>
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/notification" element={<Notification />} />
@@ -73,7 +74,7 @@ function App() {
               <Route path="/landing" element={<Landing />} />
               <Route path="/menu" element={<Menu />} />
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </bioContext.Provider>
       </div>
     </>

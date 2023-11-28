@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
@@ -67,9 +68,18 @@ const transponder = createTransport({
 });
 
 // Home Page
+// app.use(express.static('fend/dist'));
+app.use(express.static(path.join(__dirname, '../', 'fend', 'dist')));
+
+app.get('*.js', (req, res, next) => {
+  res.type('text/javascript');
+  next();
+});
 
 app.get("/", (req, res) => {
-  res.send("hello");
+  res.sendFile(path.resolve(__dirname,'../', 'fend', 'dist','index.html'));
+  // res.sendFile(path.resolve(__dirname,'../', 'fend', 'dist','second.html'));
+  // res.sendFile(path.resolve(__dirname,'second.js'));
 });
 
 // Private route

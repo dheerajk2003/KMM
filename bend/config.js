@@ -97,13 +97,13 @@ module.exports.setVerfify = function setVerfify(email,vCode,callback){
 
 module.exports.getBio = function getBio(id, callback){
   con.query(`SELECT * FROM Biodata WHERE id = ?`, id , (error , res) => {
-    if (error) {
-      console.log("Error: " + error);
-      return callback(error, null); // Pass the error to the callback
-    }
     if(res){
       // console.log(res[0]);
       callback(null, res[0]);
+    }
+    else if (error) {
+      console.log("Error: " + error);
+      return callback(error, null); // Pass the error to the callback
     }
   });
 };
