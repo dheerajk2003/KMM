@@ -6,7 +6,9 @@ export default function Registration() {
   // const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [eyeOn, setEyeOn] = useState(false);
+  const [notConfirmed, setNotConfirmed] = useState(false);
   const navigate = useNavigate();
 
   function handleRegis(e) {
@@ -24,8 +26,18 @@ export default function Registration() {
     setEyeOn(eyeOn ? false : true);
   }
 
-  async function handleSubmit(e) {
+  async function checkConf(e){
     e.preventDefault();
+    if(confirmPassword != password){
+      setNotConfirmed(true);
+    }
+    else{
+      
+      handleSubmit();
+    }
+  }
+
+  async function handleSubmit() {
     await fetch("http://localhost:4000/register", {
       method: "POST",
       headers: {
@@ -46,7 +58,7 @@ export default function Registration() {
   }
 
   return (
-    <section class="bg-gray-50 h-screen" onSubmit={handleSubmit}>
+    <section class="bg-gray-50 h-screen" onSubmit={checkConf}>
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
         <button onClick={toHome} class="flex items-center mb-3 text-4xl font-semibold text-gray-600 ">
           KMM
@@ -98,6 +110,32 @@ export default function Registration() {
                     {"👁️"}
                   </button>
                 </div>
+              </div>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium text-gray-900 "
+                >
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={eyeOn ? "text" : "password"}
+                    name=""
+                    id="userConfPassword"
+                    value={confirmPassword}
+                    onChange={(e) => {setConfirmPassword(e.target.value)}}
+                    placeholder="••••••••"
+                    class="inline mb-5 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg w-full p-2.5"
+                    required="true" />
+                  <button
+                    className="absolute inline right-3 top-2"
+                    onClick={toggleBtn}
+                  >
+                    {"👁️"}
+                  </button>
+                </div>
+                <p className="text-red-600" style={{display: notConfirmed ? "block" : "none"}}>Both Passwords should be same</p>
               </div>
               <button
                 type="submit"
