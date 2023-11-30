@@ -2,6 +2,6 @@ CREATE DATABASE KMM;
 
 CREATE TABLE Login(id int PRIMARY KEY AUTO_INCREMENT,email varchar(30) NOT NULL, hashPassword varchar(20) NOT NULL, vCode int, active bit);
 
-CREATE TABLE Biodata(id int, fullname varchar(30),dob date,state varchar(20),city varchar(20),cast varchar(20),occupation varchar(20), gender varchar(10),family varchar(20),education varchar(20),about varchar(200),aboutPar varchar(200), image varchar(127), instaId varchar(127),FOREIGN KEY(id) REFERENCES Login(id));
+CREATE TABLE Biodata(id int, fullname varchar(30),dob date,state varchar(20),city varchar(20),cast varchar(20),occupation varchar(20), gender varchar(10),family varchar(20),education varchar(20),about varchar(400),aboutPar varchar(400), image varchar(127), instaId varchar(127),FOREIGN KEY(id) REFERENCES Login(id));
 
 CREATE TABLE Requests (rId int primary key AUTO_INCREMENT, personId int, requestorId int, acceptedId int, requestorName varchar(64));
