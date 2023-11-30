@@ -104,7 +104,7 @@ export default function Partner() {
     <div className="w-screen h-auto flex flex-col m-0 p-0">
       <form id="searchForm" className="w-auto h-auto mx-auto bg-transparent translate-y-[-1.5rem]">
         <input
-          className="bg-gray-300 h-10 px-3 w-64 rounded-md mx-1 shadow-lg"
+          className="bg-gray-300 h-8 px-3 w-64 rounded-md mx-1 shadow-lg"
           type="text"
           placeholder={`search by ${searchType}`}
           value={searchInput}
@@ -112,7 +112,7 @@ export default function Partner() {
         />
         <select
           defaultChecked="fullname"
-          className="bg-gray-300 h-10 w-24 px-3 rounded-md mx1 shadow-lg"
+          className="bg-gray-300 h-8 w-24 px-3 rounded-md mx1 shadow-lg"
           onChange={(e) => setSearchType(e.target.value)}
         >
           <option value="">None</option>
@@ -122,7 +122,7 @@ export default function Partner() {
           <option value="occupation">Occupation</option>
         </select>
         <button onClick={searchDb}
-          className="bg-gray-300 h-10 px-1 rounded-md mx-1 shadow-lg"
+          className="bg-gray-300 h-8 px-1 rounded-md mx-1 shadow-lg"
         >🔍</button>
       </form>
       <div className="max-w-screen-xl m-0 p-0 grid gap-2 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3

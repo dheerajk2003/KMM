@@ -33,8 +33,22 @@ export default function GetBio() {
         setUserImage(e.target.files[0]);
     }
 
-    async function handleSubmit(e) {
+    async function checkAge(e){
         e.preventDefault();
+        const date = new Date();
+        const cYear = date.getFullYear();
+
+        const dateN = new Date(details.dob);
+        const nYear = dateN.getFullYear();
+        if(cYear - nYear < 21){
+            alert("Age should be atleast 21 Years old");
+        }
+        else{
+            handleSubmit();
+        }
+    }
+
+    async function handleSubmit() {
         let decodeToken;
         try {
             const token = localStorage.getItem("KMMtoken");
@@ -86,7 +100,7 @@ export default function GetBio() {
             <Nav />
             <div className="w-screen px-40 flex flex-col items-center justify-center">
                 <h3 className="text-center text-3xl font-bold text-gray-700 mb-6">Enter your Biodata</h3>
-                <form className="bioForm text-sm w-1/2 flex flex-col items-center justify-center" onSubmit={handleSubmit} encType="multipart/form-data">
+                <form className="bioForm text-sm w-1/2 flex flex-col items-center justify-center" onSubmit={checkAge} encType="multipart/form-data">
                     <div className="w-full my-1 flex flex-col items-start justify-center h-20 ">
                         <label className="text-gray-600" htmlFor="fullname">Name</label>
                         <input className="w-full px-3 h-1/2 bg-stone-200 rounded-md" type="text" name="fullname" id="fullname" placeholder="Enter Full Name" required="true" onChange={handleChange} />

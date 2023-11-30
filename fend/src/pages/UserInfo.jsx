@@ -147,7 +147,7 @@ export default function UserInfo()
                     <div className='text-xl'>
                         <span className='flex flex-row items-center gap-3'><p className='text-red-300'>Birth Date - </p><p className="item">{myInfo.dob}</p></span>
                         <span className='flex flex-row items-center gap-3 mb-2'><p className='text-red-300'>Cast/Nukh - </p><p className="item capitalize">{myInfo.cast}</p></span>
-                        <button className="w-auto text-white bg-rose-600 hover:shadow-md transition-all duration-100 hover:shadow-gray-600 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center " style={{backgroundColor: isRequested ? "gray" : "rgb(225 29 72 )", display: isAccepted ? "none" : "static"}} onClick={postRequest}>{isRequested ? "Requested" : "Request Insta"}</button>
+                        <button className="w-auto text-white bg-rose-600 hover:shadow-md transition-all duration-100 hover:shadow-gray-600 active:scale-105 focus:outline-none focus:ring-none font-medium rounded-lg text-sm px-4 py-1 text-center " style={{backgroundColor: isRequested ? "gray" : "rgb(225 29 72 )", display: isAccepted ? "none" : "static", display: myInfo.instaId ? "block" : "none"}} onClick={postRequest}>{isRequested ? "Requested" : "Request Insta"}</button>
 
                     </div>
                 </div>

@@ -262,7 +262,7 @@ app.post("/login", async (req, res) => {
             else{
               // sendMail(email,responce.vCode);
               console.log(responce.vCode);
-              sendMail("lifivic339@notedns.com",responce.vCode);
+              // sendMail("lifivic339@notedns.com",responce.vCode);
               res.json({ ok: true,error: "please verify email first, verification is send to your email", verified : false });
             }
 
@@ -331,7 +331,7 @@ app.post("/getBio", (req, res) => {
       myql.getBio(id, (error, responce) => {
         
         if (responce) {
-          return res.status(500).json("Bio Data already exists");
+          res.status(500).json("Bio Data already exists");
         }
         else if (error) {
           console.error("Error: " + error);
@@ -339,9 +339,10 @@ app.post("/getBio", (req, res) => {
         }
          else {
           myql.setBio(details);
+          return res.status(200).json("Bio data upload successful");
         }
       });
-      return res.status(200).json("Bio data upload successful");
+      
     } catch (error) {
       console.error(error);
       return res.status(500).json("An error occurred : " + err);
