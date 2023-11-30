@@ -39,18 +39,18 @@ export default function Login(props) {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data.verified) {
-            console.log("inside if login");
-            localStorage.setItem("KMMtoken", data.accessToken);
-            //props.setLogin(true);
-            alert(data.error);
-            //window.location.reload(false);
-            navigate("/feed");
-          } else {
-            console.log("from else in login" , data);
-            alert(data.error);
-            setCodeOn(true);
+          if(data.ok){
+            if (data.verified) {
+              console.log("inside if login");
+              localStorage.setItem("KMMtoken", data.accessToken);
+              //props.setLogin(true);
+              //window.location.reload(false);
+              navigate("/feed");
+            } else {
+              setCodeOn(true);
+            }
           }
+          alert(data.error);
         });
     } catch (error) {
       alert("error occured in login" + error);
