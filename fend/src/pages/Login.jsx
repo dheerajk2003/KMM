@@ -28,9 +28,10 @@ export default function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("hmm",import.meta.env.BE_ADD);
+    console.log(import.meta.env.BE_ADD);
+    console.log(import.meta.env.VITE_BAD);
     try {
-      fetch(`http://$import.meta.env.BE_ADD}/${codeOn ? "verify" : "login"}`, {
+      fetch(`${import.meta.env.VITE_BAD}/${codeOn ? "verify" : "login"}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

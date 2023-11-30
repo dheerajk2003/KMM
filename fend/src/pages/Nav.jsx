@@ -28,7 +28,7 @@ export default function Nav() {
 
   async function getNoti() {
     if(user){
-      const responce = await fetch("http://localhost:4000/getRequests", {
+      const responce = await fetch(`${import.meta.env.VITE_BAD}/getRequests`, {
         method: "POST",
         headers: {
           "auth-token": token,

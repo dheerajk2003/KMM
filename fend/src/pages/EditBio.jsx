@@ -84,7 +84,7 @@ export default function EditBio() {
                 return { ...prevData, "id": `${decodeToken}` }
             })
             
-            fetch("http://localhost:4000/editbio", {
+            fetch(`${import.meta.env.VITE_BAD}/editbio`, {
                 method: 'POST',
                 headers: {
                     "id": decodeToken,

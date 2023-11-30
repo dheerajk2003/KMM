@@ -28,7 +28,7 @@ export default function UserInfo()
     function getInfo(id){   
         try{
             if(id){
-                fetch(`http://localhost:4000/info${id}`, {
+                fetch(`${import.meta.env.VITE_BAD}/info${id}`, {
                     method: 'GET',
                     headers: {
                         "auth-token": `${myToken}`
@@ -57,7 +57,7 @@ export default function UserInfo()
 
     async function postRequest(e){
         e.preventDefault()
-        await fetch("http://localhost:4000/setRequest",{
+        await fetch(`${import.meta.env.VITE_BAD}/setRequest`,{
             method: "POST",
             headers: {
                 "auth-token": `${myToken}`,
@@ -78,7 +78,7 @@ export default function UserInfo()
 
     async function getRequests(){
         try{
-            const responce = await fetch("http://localhost:4000/getRequests",{
+            const responce = await fetch(`${import.meta.env.VITE_BAD}/getRequests`,{
                 method: "POST",
                 headers:{
                     "auth-token": `${myToken}`,
@@ -99,7 +99,7 @@ export default function UserInfo()
 
     async function getAccepted(){
         try{
-            const responce = await fetch("http://localhost:4000/getAccepted",{
+            const responce = await fetch(`${import.meta.env.VITE_BAD}/getAccepted`,{
                 method: "POST",
                 headers:{
                     "auth-token": `${myToken}`,

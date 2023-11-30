@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   async function getBiodata() {
-    fetch(`http://localhost:4000/post${decodeToken}`, {
+    fetch(`${import.meta.env.VITE_BAD}/post${decodeToken}`, {
       method: 'GET',
       headers: {
         "auth-token": `${token}`

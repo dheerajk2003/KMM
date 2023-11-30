@@ -14,7 +14,7 @@ export default function Notification() {
     }, [])
 
     async function getNoti() {
-        const responce = await fetch("http://localhost:4000/getRequests", {
+        const responce = await fetch(`${import.meta.env.VITE_BAD}/getRequests`, {
             method: "POST",
             headers: {
                 "auth-token": token,
@@ -30,7 +30,7 @@ export default function Notification() {
 
     async function acceptReq(requestorId) {
         // e.preventDefault();
-        await fetch("http://localhost:4000/accecptReq", {
+        await fetch(`${import.meta.env.VITE_BAD}/accecptReq`, {
             method: "POST",
             headers: {
                 "auth-token": token,
@@ -41,7 +41,7 @@ export default function Notification() {
     }
 
     async function deleteReq(requestorId) {
-        await fetch("http://localhost:4000/deleteReq", {
+        await fetch(`${import.meta.env.VITE_BAD}/deleteReq`, {
             method: "POST",
             headers: {
                 "auth-token": token,

@@ -57,7 +57,7 @@ export default function GetBio() {
                 return { ...prevData, "id": `${decodeToken}` }
             })
 
-            await fetch("http://localhost:4000/getBio", {
+            await fetch(`${import.meta.env.VITE_BAD}/getBio`, {
                 method: 'POST',
                 headers: {
                     "id": decodeToken,
@@ -75,7 +75,7 @@ export default function GetBio() {
             if (userImage) {
                 const formData = new FormData();
                 formData.append('image', userImage);
-                await fetch("http://localhost:4000/uploadimage", {
+                await fetch(`${import.meta.env.VITE_BAD}/uploadimage`, {
                     method: 'POST',
                     body: formData,
                     headers: {

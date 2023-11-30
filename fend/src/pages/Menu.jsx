@@ -30,7 +30,7 @@ export default function Menu(){
     function getInfo(id){
         try{
             if(id){
-                fetch(`http://localhost:4000/info${id}`, {
+                fetch(`${import.meta.env.VITE_BAD}/info${id}`, {
                     method: 'GET',
                     headers: {
                         "auth-token": `${myToken}`
@@ -63,7 +63,7 @@ export default function Menu(){
     function deleteBio(){
         const alertData = confirm("Do you realy want to delete bio data");
         if(alertData){
-            fetch("http://localhost:4000/deletebio", {
+            fetch(`${import.meta.env.VITE_BAD}/deletebio`, {
                 method: "GET",
                 headers: {
                     "auth-token": `${myToken}`,

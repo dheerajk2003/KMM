@@ -17,7 +17,7 @@ export default function Partner() {
   useEffect(() => {
     setGen(biodata.gender)
 
-    fetch("http://localhost:4000/partner", {
+    fetch(`${import.meta.env.VITE_BAD}/partner`, {
       headers: {
         "auth-token": `${myToken}`,
         id: id,
@@ -42,7 +42,7 @@ export default function Partner() {
     // })
 
     if (!gen) {
-      await fetch(`http://localhost:4000/post${id}`, {
+      await fetch(`${import.meta.env.VITE_BAD}/post${id}`, {
         method: "GET",
         headers: {
           "auth-token": `${myToken}`,
@@ -55,7 +55,7 @@ export default function Partner() {
         });
     }
     
-    await fetch("http://localhost:4000/partner", {
+    await fetch(`${import.meta.env.VITE_BAD}/partner`, {
       headers: {
         "auth-token": `${myToken}`,
         id: id,

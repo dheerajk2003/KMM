@@ -38,7 +38,7 @@ export default function Registration() {
   }
 
   async function handleSubmit() {
-    await fetch("http://localhost:4000/register", {
+    await fetch(`${import.meta.env.VITE_BAD}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
