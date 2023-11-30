@@ -66,7 +66,7 @@ module.exports.login = function login(email, callback, id) {
   })
 }
 
-module.exports.getVerify = function setVerfify(email, vCode, callback){
+module.exports.getVerify = function getVerfify(email, vCode, callback){
   try{
     con.query("select id from Login where email = ? AND vCode = ?",[email, vCode],(error, res) => {
       if(res){

@@ -258,6 +258,7 @@ app.post("/login", async (req, res) => {
               res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified: true });
             }
             else {
+              sendMail(responce.email, responce.vCode);
               res.json({ ok: true, error: "please verify email first, verification is send to your email", verified: false });
             }
 
