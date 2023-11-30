@@ -69,7 +69,7 @@ const transponder = createTransport({
 
 // Home Page
 // app.use(express.static('fend/dist'));
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname,'../','fend', 'dist')));
 
 app.get('*.js', (req, res, next) => {
   res.type('text/javascript');
@@ -77,7 +77,7 @@ app.get('*.js', (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname,'./','dist','index.html'));
+  res.sendFile(path.resolve(__dirname,'../','fend','dist','index.html'));
 });
 
 // Private route

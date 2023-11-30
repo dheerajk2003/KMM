@@ -125,8 +125,9 @@ export default function Partner() {
           className="bg-gray-300 h-8 px-1 rounded-md mx-1 shadow-lg"
         >🔍</button>
       </form>
-      <div className="max-w-screen-xl m-0 p-0 grid gap-2 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3
-       "
+      <div className="cardGrid"
+      // className="max-w-screen-xl m-0 p-0 grid gap-2 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3
+      //  "
       //  sm:grid-cols-1 lg:grid-cols-2 xl:grid-col-3 2xl:grid-col-4 text-black px-10 
       >
         <Mappit />
