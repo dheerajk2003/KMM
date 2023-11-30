@@ -465,7 +465,6 @@ app.post("/getRequests", authenticateToken, (req, res) => {
 app.post("/getAccepted", authenticateToken, (req, res) => {
   try {
     const { person, acceptor } = req.body;
-    console.log("in getadptd index", person, acceptor)
     myql.getAccepted(person, acceptor, (error, responce) => {
       if (responce) {
         // console.log(responce);

@@ -212,7 +212,6 @@ module.exports.getRequests = function getRequests(pId, rId, callback){
 }
 
 module.exports.getAccepted = function getAccepted(id,acptId, callback){
-  console.log("in getacpt config ",id, acptId);
   try{
     con.query("select personId from Requests where personId = ? AND acceptedId = ?",[id,acptId],(error, res) => {
       if(error){

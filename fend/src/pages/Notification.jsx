@@ -68,7 +68,8 @@ export default function Notification() {
 
                     {/* <button onClick={() => { deleteReq(item.requestorId) }}>Ignore</button> */}
 
-                    <RedSmallButton name={"Ignore"} func={() => {
+                    <RedSmallButton name={"Ignore"} 
+                        func={() => {
                         deleteReq(item.requestorId) 
                         getNoti()
                     }} btncss={{backgroundColor: "gray"}}></RedSmallButton>
