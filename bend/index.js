@@ -12,7 +12,7 @@ const myql = require("./config");
 const { resolve } = require("path");
 const { pid } = require("process");
 const { isTypedArray } = require("util/types");
-const {createTransport} = require("nodemailer");
+const { createTransport } = require("nodemailer");
 // const { receiveMessageOnPort } = require("worker_threads");
 myql.connection();
 
@@ -45,12 +45,12 @@ const storage = multer.diskStorage({
   },
 });
 
-async function sendMail(recEmail, pin){
+async function sendMail(recEmail, pin) {
   await transponder.sendMail({
-      from:"dheerajkhatri",
-      to: recEmail,
-      subject: "KMM verificaiton",
-      html: "<h3>Verification Code</h3><p>"+pin+"</p>"
+    from: "dheerajkhatri",
+    to: recEmail,
+    subject: "KMM verificaiton",
+    html: "<h3>Verification Code</h3><p>" + pin + "</p>"
   })
 }
 
@@ -62,14 +62,14 @@ const transponder = createTransport({
   port: 587,
   secure: false,
   auth: {
-      user: "dheerajkhatri2003@gmail.com",
-      pass: "nydt dnau twvf vgkk"
+    user: "dheerajkhatri2003@gmail.com",
+    pass: "nydt dnau twvf vgkk"
   }
 });
 
 // Home Page
 // app.use(express.static('fend/dist'));
-app.use(express.static(path.join(__dirname,'../','fend', 'dist')));
+app.use(express.static(path.join(__dirname, '../', 'fend', 'dist')));
 
 app.get('*.js', (req, res, next) => {
   res.type('text/javascript');
@@ -77,7 +77,7 @@ app.get('*.js', (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname,'../','fend','dist','index.html'));
+  res.sendFile(path.resolve(__dirname, '../', 'fend', 'dist', 'index.html'));
 });
 
 // Private route
@@ -254,20 +254,15 @@ app.post("/login", async (req, res) => {
               responce.id,
               process.env.ACCESS_TOKEN_SECRET
             );
-            console.log("active " , responce.active)
-            if(responce.active.readUInt8(0) === 1){
-              console.log("inside if Login");
-              res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified : true });
+            if (responce.active.readUInt8(0) === 1) {
+              res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified: true });
             }
-            else{
-              // sendMail(email,responce.vCode);
-              console.log(responce.vCode);
-              // sendMail("lifivic339@notedns.com",responce.vCode);
-              res.json({ ok: true,error: "please verify email first, verification is send to your email", verified : false });
+            else {
+              res.json({ ok: true, error: "please verify email first, verification is send to your email", verified: false });
             }
 
           } else {
-            res.json({ ok: false, error: "email or password is wrong"});
+            res.json({ ok: false, error: "email or password is wrong" });
           }
         } else {
           res.json({ ok: false, error: "user not registered" });
@@ -280,41 +275,39 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/verify",(req, res) => {
-  try{
-    const {email,vCode} = req.body;
-    console.log("from verify", vCode);
-    myql.getVerify(email,vCode, (error, responce) => {
-      if(responce){
-        console.log(responce);
-        if(responce.length > 0){
+app.post("/verify", (req, res) => {
+  try {
+    const { email, vCode } = req.body;
+    myql.getVerify(email, vCode, (error, responce) => {
+      if (responce) {
+        if (responce.length > 0) {
           myql.setVerfify(email, vCode, (err, responce2) => {
-            if(responce2){
-              if(responce2.affectedRows > 0){
+            if (responce2) {
+              if (responce2.affectedRows > 0) {
                 const token = jwt.sign(
-                  responce[0].id ,
+                  responce[0].id,
                   process.env.ACCESS_TOKEN_SECRET
                 );
-                res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified : true });
+                res.json({ ok: true, error: "logged in succesfully", accessToken: token, verified: true });
               }
             }
-            if(err){
+            if (err) {
               console.log(err);
-              res.json({ok:false,error: "error while verifying"});
+              res.json({ ok: false, error: "error while verifying" });
             }
           })
         }
-        else{
-          res.json({ok:false,error: "wrong code"});
+        else {
+          res.json({ ok: false, error: "wrong code" });
         }
       }
-      if(error){
+      if (error) {
         console.log(error);
-        res.json({error:"error while verifying"})
+        res.json({ error: "error while verifying" })
       }
     })
   }
-  catch(error){
+  catch (error) {
     console.log(error);
   }
 })
@@ -329,7 +322,7 @@ app.post("/getBio", (req, res) => {
     try {
       details.id = id;
       myql.getBio(id, (error, responce) => {
-        
+
         if (responce) {
           res.status(500).json("Bio Data already exists");
         }
@@ -337,12 +330,12 @@ app.post("/getBio", (req, res) => {
           console.error("Error: " + error);
           res.status(500).json({ error: "Database error" });
         }
-         else {
+        else {
           myql.setBio(details);
           return res.status(200).json("Bio data upload successful");
         }
       });
-      
+
     } catch (error) {
       console.error(error);
       return res.status(500).json("An error occurred : " + err);
@@ -416,7 +409,7 @@ app.post("/editbio", authenticateToken, (req, res) => {
         res.status(500).json({ error: "Database error" });
       }
       if (responce) {
-        if(details.image != responce.image){
+        if (details.image != responce.image) {
           removeImg(id);
         }
         myql.delBio(id);
@@ -431,117 +424,117 @@ app.post("/editbio", authenticateToken, (req, res) => {
 });
 
 app.post("/setRequest", authenticateToken, (req, res) => {
-  try{
-    const {person, requestor, name, reqType} = req.body;
+  try {
+    const { person, requestor, name, reqType } = req.body;
     // console.log("from back- "+person, requestor, reqType);
-    myql.setRequest(person, requestor, name, reqType, (error,response) => {
-      if(error){
+    myql.setRequest(person, requestor, name, reqType, (error, response) => {
+      if (error) {
         console.log(error);
         res.json(error);
       }
-      if(response){
+      if (response) {
         // console.log(response);
         res.json(response);
       }
     })
   }
-  catch(error){
+  catch (error) {
     res.json("An error occured while requesting");
   }
 })
 
 app.post("/getRequests", authenticateToken, (req, res) => {
-  try{
-    const {person, requestor} = req.body;
+  try {
+    const { person, requestor } = req.body;
     // console.log("from getRequests" + person, requestor);
-    myql.getRequests(person, requestor, (error, responce)=> {
-      if(responce){
+    myql.getRequests(person, requestor, (error, responce) => {
+      if (responce) {
         // console.log(responce);
         res.json(responce);
       }
-      if(error){
+      if (error) {
         res.json(error);
       }
     })
   }
-  catch(error){
+  catch (error) {
     res.json("an error occured");
   }
 })
 
-app.post("/getAccepted",authenticateToken,(req,res) => {
-  try{
-    const {person, acceptor} = req.body;
-    console.log("in getadptd index",person, acceptor)
-    myql.getAccepted(person,acceptor,(error, responce) => {
-      if(responce){
+app.post("/getAccepted", authenticateToken, (req, res) => {
+  try {
+    const { person, acceptor } = req.body;
+    console.log("in getadptd index", person, acceptor)
+    myql.getAccepted(person, acceptor, (error, responce) => {
+      if (responce) {
         // console.log(responce);
         res.json(responce);
       }
-      if(error){
+      if (error) {
         res.json(error);
       }
     })
   }
-  catch(error){
-    console.log("error while getting accepted requests" , error);
+  catch (error) {
+    console.log("error while getting accepted requests", error);
     res.json("error while getting accepted requests");
   }
 })
 
-app.get("/getName", (req,res) => {
-  try{
+app.get("/getName", (req, res) => {
+  try {
     const id = req.header("id");
-    if(id){
-      myql.getName(id,(error, responce) => {
-        if(responce){
+    if (id) {
+      myql.getName(id, (error, responce) => {
+        if (responce) {
           res.json(responce);
         }
-        if(error){
+        if (error) {
           res.json(error);
         }
       })
     }
   }
-  catch(error){
+  catch (error) {
     res.json(error);
     console.log(error);
   }
 })
 
-app.post("/accecptReq",authenticateToken, (req, res) => {
-  try{
-    const {person, requestor} = req.body;
-    myql.acceptReq(person,requestor, (error, responce) => {
-      if(responce){
+app.post("/accecptReq", authenticateToken, (req, res) => {
+  try {
+    const { person, requestor } = req.body;
+    myql.acceptReq(person, requestor, (error, responce) => {
+      if (responce) {
         res.json(responce);
       }
-      if(error){
+      if (error) {
         res.json(error);
       }
     })
   }
-  catch(error){
+  catch (error) {
     res.json("error while accepting request");
-    console.log("error while accepting request" , error);
+    console.log("error while accepting request", error);
   }
 })
 
-app.post("/deleteReq",authenticateToken,(req,res) => {
-  try{
-    const {person, requestor} = req.body;
-    myql.deleteReq(person,requestor, (error, responce) => {
-      if(responce){
+app.post("/deleteReq", authenticateToken, (req, res) => {
+  try {
+    const { person, requestor } = req.body;
+    myql.deleteReq(person, requestor, (error, responce) => {
+      if (responce) {
         res.json(responce);
       }
-      if(error){
+      if (error) {
         res.json(error);
       }
     })
   }
-  catch(error){
+  catch (error) {
     res.json("error while ignoring request");
-    console.log("error while ignoring request ",error);
+    console.log("error while ignoring request ", error);
   }
 })
 

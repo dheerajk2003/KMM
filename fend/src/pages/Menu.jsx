@@ -18,7 +18,6 @@ export default function Menu(){
     const {userId} = useParams();
 
     useEffect(() => {
-        console.log("page refreshed");
         setMyInfo(biodata);
         if(!biodata.id){
             getInfo(decodedToken);
@@ -31,7 +30,6 @@ export default function Menu(){
     function getInfo(id){
         try{
             if(id){
-                console.log(biodata,"not found biodata");
                 fetch(`http://localhost:4000/info${id}`, {
                     method: 'GET',
                     headers: {

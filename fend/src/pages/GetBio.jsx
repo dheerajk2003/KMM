@@ -56,7 +56,7 @@ export default function GetBio() {
             setDetails((prevData) => {
                 return { ...prevData, "id": `${decodeToken}` }
             })
-            console.log(details, token, decodeToken);
+
             await fetch("http://localhost:4000/getBio", {
                 method: 'POST',
                 headers: {
@@ -84,7 +84,6 @@ export default function GetBio() {
                 })
                     .then(responce => responce)
                     .then((data) => {
-                        console.log(data);
                         window.Location.reload(false);
                     })
             }

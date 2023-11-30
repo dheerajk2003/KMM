@@ -25,8 +25,6 @@ export default function UserInfo()
         getAccepted();
     }, []);
 
-    console.log(isAccepted);
-
     function getInfo(id){   
         try{
             if(id){
@@ -110,7 +108,6 @@ export default function UserInfo()
                 body: JSON.stringify({person:userId, acceptor:decodedToken})
             })
             const data = await responce.json();
-            console.log(data);
             if(userId == data[0]?.personId){
                 setIsAccepted(true);
                 const date = new Date();

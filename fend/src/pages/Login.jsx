@@ -28,7 +28,6 @@ export default function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("called the func");
     try {
       fetch(`http://localhost:4000/${codeOn ? "verify" : "login"}`, {
         method: "POST",
@@ -41,7 +40,6 @@ export default function Login(props) {
         .then((data) => {
           if(data.ok){
             if (data.verified) {
-              console.log("inside if login");
               localStorage.setItem("KMMtoken", data.accessToken);
               //props.setLogin(true);
               //window.location.reload(false);

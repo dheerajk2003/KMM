@@ -12,10 +12,8 @@ export default function Nav() {
   const [notifications, setNotifications] = useState(false);
 
   useEffect(() => {
-    console.log(biodata, "inside nav");
     setUser(biodata);
     if (!biodata.id) {
-      console.log("not bio in nav");
       takeBioData((error, data) => {
         if (error) {
           console.log(error);
@@ -30,7 +28,6 @@ export default function Nav() {
 
   async function getNoti() {
     if(user){
-      console.log("inside getNoti");
       const responce = await fetch("http://localhost:4000/getRequests", {
         method: "POST",
         headers: {
@@ -40,9 +37,7 @@ export default function Nav() {
         body: JSON.stringify({ person: decodedToken })
       })
       const data = await responce.json();
-      console.log(data, "from get Noti");
       if (data.length > 0) {
-        console.log("inside if con get Noti");
         setNotifications(true);
       }
     }

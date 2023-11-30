@@ -27,24 +27,24 @@ export default function EditBio() {
         setDetails(biodata);
 
         setTimeout(() => {
-        if (biodata.id != decodeToken) {
-            fetch(`http://localhost:4000/info${decodeToken}`, {
-                method: 'GET',
-                headers: {
-                    "auth-token": `${token}`
-                }
-            })
-                .then(responce => responce.json())
-                .then((data) => {
-                    if (data.id) {
-                        setBiodata(data);
-                        setDetails(data);
+            if (biodata.id != decodeToken) {
+                fetch(`http://localhost:4000/info${decodeToken}`, {
+                    method: 'GET',
+                    headers: {
+                        "auth-token": `${token}`
                     }
-                    else {
-                        alert(data);
-                    }
-                });
-        }
+                })
+                    .then(responce => responce.json())
+                    .then((data) => {
+                        if (data.id) {
+                            setBiodata(data);
+                            setDetails(data);
+                        }
+                        else {
+                            alert(data);
+                        }
+                    });
+            }
         }, 1000);
 
 
@@ -83,7 +83,7 @@ export default function EditBio() {
             setDetails((prevData) => {
                 return { ...prevData, "id": `${decodeToken}` }
             })
-            console.log(details, token, decodeToken);
+            
             fetch("http://localhost:4000/editbio", {
                 method: 'POST',
                 headers: {
@@ -108,11 +108,11 @@ export default function EditBio() {
                     headers: {
                         "id": decodeToken
                     }
+                    // })
+                    //     .then(responce => responce.json())
+                    //     .then((data) => {
+                    //         console.log(data);
                 })
-                    .then(responce => responce.json())
-                    .then((data) => {
-                        console.log(data);
-                    })
             }
         }
         catch (e) {

@@ -45,9 +45,6 @@ function App() {
         if(data.id){
           setBiodata(data);
         }
-        else{
-          console.log("app.jsx not found bio");
-        }
       });
   }
 

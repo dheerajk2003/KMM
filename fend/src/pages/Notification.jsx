@@ -23,7 +23,6 @@ export default function Notification() {
             body: JSON.stringify({ person: decodedToken })
         })
         const data = await responce.json();
-        console.log(data);
         if (data.length > 0) {
             setRequestors(data);
         }

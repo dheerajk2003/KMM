@@ -54,9 +54,7 @@ export default function Partner() {
           // alert("data recieved");
         });
     }
-
-    console.log("from partner");
-    console.log(gen);
+    
     await fetch("http://localhost:4000/partner", {
       headers: {
         "auth-token": `${myToken}`,
