@@ -237,7 +237,7 @@ app.post("/register", async (req, res) => {
 
 // Login
 
-app.post("/login", async (req, res) => {
+app.post("/login",cors(), async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -557,5 +557,5 @@ function authenticateToken(req, res, next) {
   }
 }
 
-const port = 4000;
-app.listen(port);
+const port ="0.0.0.0";
+app.listen(4000,port);

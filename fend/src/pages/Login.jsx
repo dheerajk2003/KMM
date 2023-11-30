@@ -28,8 +28,9 @@ export default function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log("hmm",import.meta.env.BE_ADD);
     try {
-      fetch(`http://localhost:4000/${codeOn ? "verify" : "login"}`, {
+      fetch(`http://$import.meta.env.BE_ADD}/${codeOn ? "verify" : "login"}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +68,7 @@ export default function Login(props) {
               Sign in to your account
             </h1>
             {/* <form className="space-y-4 md:space-y-6"> */}
-            <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit}>
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="userEmail"
@@ -137,12 +138,13 @@ export default function Login(props) {
                 type="submit"
                 className="w-full text-white bg-rose-600 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >Sign In</button>
+
               <p className="text-sm font-light text-gray-500 ">
                 Don’t have an account yet?{" "}
                 <button type="button"
-                  onClick={handleRegis}
                   className="text-rose-400 text-bold hover:underline"
-                >
+	  	onClick={handleRegis}		
+	  	>
                   Sign up
                 </button>
               </p>

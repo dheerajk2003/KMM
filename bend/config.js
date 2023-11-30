@@ -4,7 +4,9 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: process.env.DB_PASSWORD,
-    database: "KMM"
+    database: "KMM",
+    port:"4000",
+    multipleStatements: true
 });
 
 module.exports.connection = function connection(){
