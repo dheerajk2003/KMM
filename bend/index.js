@@ -240,7 +240,7 @@ app.post("/register", async (req, res) => {
 app.post("/login",cors(), async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    
     myql.login(
       email,
       async (error, responce) => {

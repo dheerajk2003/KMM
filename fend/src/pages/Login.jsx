@@ -30,8 +30,10 @@ export default function Login(props) {
     e.preventDefault();
     console.log(import.meta.env.BE_ADD);
     console.log(import.meta.env.VITE_BAD);
+    // const apiUrl = `${import.meta.env.VITE_BAD}/${codeOn ? "verify" : "login"}`
+    const apiUrl = `${import.meta.env.VITE_BAD}/${codeOn ? "verify" : "login"}`
     try {
-      fetch(`${import.meta.env.VITE_BAD}/${codeOn ? "verify" : "login"}`, {
+      fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

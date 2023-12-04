@@ -28,7 +28,7 @@ export default function EditBio() {
 
         setTimeout(() => {
             if (biodata.id != decodeToken) {
-                fetch(`http://localhost:4000/info${decodeToken}`, {
+                fetch(`${import.meta.env.VITE_BAD}/info${decodeToken}`, {
                     method: 'GET',
                     headers: {
                         "auth-token": `${token}`

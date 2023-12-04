@@ -5,7 +5,7 @@ const con = mysql.createConnection({
     user: "root",
     password: process.env.DB_PASSWORD,
     database: "KMM",
-    port:"4000",
+    // port:"4000",
     multipleStatements: true
 });
 
@@ -56,6 +56,7 @@ module.exports.getRegistered = function getRegistered(email, callback) {
 };
 
 module.exports.login = function login(email, callback, id) {
+  console.log("inside login db");
   con.query(`SELECT * FROM Login WHERE ${email ? "email" : "id"} = ?`, email ? email : id, (error, res) => {
     if (error) {
       console.log("Error: " + error);
